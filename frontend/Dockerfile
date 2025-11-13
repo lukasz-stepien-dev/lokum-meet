@@ -1,31 +1,46 @@
 # Build stage
 FROM node:22-alpine AS builder
+
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
 WORKDIR /app
 
-# Copy package files first for better caching
+# Copy package files
 COPY package.json pnpm-lock.yaml ./
+
+# Install ALL dependencies (including devDependencies for build)
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
-# Copy source and build
+# Copy source
 COPY . .
+
+# Build
 RUN pnpm run build
 
-# Verify the build output exists
-RUN ls -la /app/dist || (echo "Build failed - no dist folder" && exit 1)
+# Runtime stage
+FROM node:22-alpine AS runner
 
-# Runtime stage - Use nginx to serve built files
-FROM nginx:alpine
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 
-# Copy nginx config
-COPY nginx.conf /etc/nginx/nginx.conf
+WORKDIR /app
 
-# Copy built app from builder stage (not "build")
-COPY --from=builder /app/dist /usr/share/nginx/html
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Copy built files
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/pnpm-lock.yaml ./
+COPY --from=builder /app/next.config.* ./
+
+# Install only production dependencies
+RUN pnpm install --prod --frozen-lockfile
 
 EXPOSE 3000
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["pnpm", "start"]
