@@ -11,5 +11,14 @@ public class Event {
     @Column(nullable = false)
     private Long id;
 
+    @Column(nullable = false)
+    private String title;
 
+    @Column(length = 2000)
+    private String description;
+
+    @Column(length = 500)
+    private String location;
+
+    @Column(name = "start_time")
 }
