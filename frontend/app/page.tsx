@@ -1,9 +1,53 @@
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+
 export default function Home() {
     return (
-        <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-            <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-                <h1 className="text-5xl font-bold text-zinc-900 dark:text-zinc-100 sm:text-6xl" />
-            </main>
+        <div className="min-h-screen flex items-center justify-center p-4">
+            <Card className="w-full max-w-md shadow-lg">
+                <CardHeader className="text-center">
+                    <CardTitle className="text-3xl font-bold text-primary">
+                        Locum Meet
+                    </CardTitle>
+                    <CardDescription className="text-lg">
+                        Witaj! Wybierz opcję aby kontynuować
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <Link href="/login" className="w-full">
+                        <Button
+                            className="w-full h-12 text-lg bg-primary hover:bg-alt-primary transition-colors"
+                            size="lg"
+                        >
+                            Zaloguj się
+                        </Button>
+                    </Link>
+
+                    <div className="flex items-center space-x-2 mt-3">
+                        <Separator className="flex-1" />
+                        <span className="text-sm text-gray-500">lub</span>
+                        <Separator className="flex-1" />
+                    </div>
+
+                    <Link href="/register" className="w-full">
+                        <Button
+                            variant="outline"
+                            className="w-full h-12 text-lg border-primary text-primary hover:bg-primary hover:text-white transition-colors"
+                            size="lg"
+                        >
+                            Zarejestruj się
+                        </Button>
+                    </Link>
+                </CardContent>
+            </Card>
         </div>
     );
 }

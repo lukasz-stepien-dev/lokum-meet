@@ -24,7 +24,12 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body>{children}</body>
+            <body 
+                className={`${geistSans.variable} ${geistMono.variable} bg-background min-h-screen antialiased`}
+                suppressHydrationWarning={true}
+            >
+                {children}
+            </body>
         </html>
     );
 }
