@@ -21,7 +21,7 @@ export default function Home() {
                         Witaj! Wybierz opcję aby kontynuować
                     </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-6 px-6 pb-6">
+                <CardContent className="space-y-6 px-6 pb-3">
                     <Link href="/login" className="w-full">
                         <Button
                             className="w-full h-12 text-lg bg-primary hover:bg-alt-primary text-white transition-all duration-200 shadow-md hover:shadow-lg"
@@ -47,10 +47,10 @@ export default function Home() {
                         </Button>
                     </Link>
 
-                    <div className="text-center pt-2">
+                    <div className="text-center mt-4">
                         <Link
                             href="/preferences"
-                            className="text-sm text-accent hover:text-primary underline transition-colors duration-200 font-medium"
+                            className="text-sm text-accent hover:text-primary underline transition-colors duration-200 font-medium block mb-2"
                         >
                             Ustaw preferencje wydarzeń
                         </Link>
