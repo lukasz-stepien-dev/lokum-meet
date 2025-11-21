@@ -46,6 +46,15 @@ export default function Home() {
                             Zarejestruj się
                         </Button>
                     </Link>
+
+                    <div className="text-center mt-4">
+                        <Link
+                            href="/preferences"
+                            className="text-sm text-primary hover:text-alt-primary underline transition-colors"
+                        >
+                            Ustaw preferencje wydarzeń
+                        </Link>
+                    </div>
                 </CardContent>
             </Card>
         </div>

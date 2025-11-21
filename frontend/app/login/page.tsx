@@ -17,10 +17,33 @@ import { Separator } from "@/components/ui/separator";
 export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [message, setMessage] = useState<{
+        type: "success" | "error";
+        text: string;
+    } | null>(null);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Login:", { email, password });
+        setIsLoading(true);
+        setMessage(null);
+
+        // Simulate API call
+        setTimeout(() => {
+            // Mock success/error logic
+            if (email && password) {
+                setMessage({
+                    type: "success",
+                    text: "Logowanie zakończone sukcesem!",
+                });
+            } else {
+                setMessage({
+                    type: "error",
+                    text: "Błąd logowania. Sprawdź dane.",
+                });
+            }
+            setIsLoading(false);
+        }, 1000);
     };
 
     return (
@@ -35,6 +58,18 @@ export default function LoginPage() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
+                    {message && (
+                        <div
+                            className={`mb-4 p-3 rounded-md text-sm ${
+                                message.type === "success"
+                                    ? "bg-secondary/10 text-secondary border border-secondary/20"
+                                    : "bg-red-50 text-red-600 border border-red-200"
+                            }`}
+                        >
+                            {message.text}
+                        </div>
+                    )}
+
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
@@ -64,9 +99,10 @@ export default function LoginPage() {
 
                         <Button
                             type="submit"
-                            className="w-full bg-primary hover:bg-alt-primary transition-colors"
+                            disabled={isLoading}
+                            className="w-full bg-primary hover:bg-alt-primary transition-colors disabled:opacity-50"
                         >
-                            Zaloguj się
+                            {isLoading ? "Logowanie..." : "Zaloguj się"}
                         </Button>
                     </form>
 
@@ -78,7 +114,7 @@ export default function LoginPage() {
                             </span>
                             <Link
                                 href="/register"
-                                className="text-sm text-primary hover:text-alt-primary font-medium underline"
+                                className="text-sm text-primary hover:text-alt-primary font-medium underline transition-colors"
                             >
                                 Zarejestruj się
                             </Link>
@@ -86,7 +122,7 @@ export default function LoginPage() {
                         <div className="text-center mt-2">
                             <Link
                                 href="/"
-                                className="text-sm text-accent hover:text-primary underline"
+                                className="text-sm text-primary hover:text-alt-primary underline transition-colors"
                             >
                                 ← Powrót do strony głównej
                             </Link>

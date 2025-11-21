@@ -92,4 +92,21 @@
     .hover\:text-alt-primary:hover {
         color: var(--alt-primary);
     }
+
+    .toggle-selected {
+        background-color: var(--primary) !important;
+        color: white !important;
+        border-color: var(--primary) !important;
+    }
+
+    .toggle-unselected {
+        background-color: white;
+        color: var(--primary);
+        border-color: var(--border);
+    }
+
+    .toggle-hover {
+        border-color: var(--primary);
+        background-color: rgba(54, 70, 200, 0.1);
+    }
 }

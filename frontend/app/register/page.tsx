@@ -18,21 +18,96 @@ export default function RegisterPage() {
     const [formData, setFormData] = useState({
         name: "",
         email: "",
+        birthDate: "",
         password: "",
         confirmPassword: "",
     });
+    const [isLoading, setIsLoading] = useState(false);
+    const [message, setMessage] = useState<{
+        type: "success" | "error";
+        text: string;
+    } | null>(null);
 
     const handleChange = (field: string, value: string) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    // Calculate max birth date (13 years ago from today)
+    const getMaxBirthDate = () => {
+        const today = new Date();
+        const maxDate = new Date(
+            today.getFullYear() - 13,
+            today.getMonth(),
+            today.getDate()
+        );
+        return maxDate.toISOString().split("T")[0];
+    };
+
+    // Calculate min birth date (reasonable limit - 100 years ago)
+    const getMinBirthDate = () => {
+        const today = new Date();
+        const minDate = new Date(
+            today.getFullYear() - 100,
+            today.getMonth(),
+            today.getDate()
+        );
+        return minDate.toISOString().split("T")[0];
+    };
+
+    const validateBirthDate = (birthDate: string) => {
+        if (!birthDate) return false;
+
+        const inputDate = new Date(birthDate);
+        const today = new Date();
+        const minAge = new Date(
+            today.getFullYear() - 13,
+            today.getMonth(),
+            today.getDate()
+        );
+        const maxAge = new Date(
+            today.getFullYear() - 100,
+            today.getMonth(),
+            today.getDate()
+        );
+
+        return inputDate <= minAge && inputDate >= maxAge;
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsLoading(true);
+        setMessage(null);
+
         if (formData.password !== formData.confirmPassword) {
-            alert("Hasła nie są identyczne!");
+            setMessage({ type: "error", text: "Hasła nie są identyczne!" });
+            setIsLoading(false);
             return;
         }
-        console.log("Register:", formData);
+
+        if (!validateBirthDate(formData.birthDate)) {
+            setMessage({
+                type: "error",
+                text: "Musisz mieć ukończone 13 lat aby się zarejestrować!",
+            });
+            setIsLoading(false);
+            return;
+        }
+
+        // Simulate API call
+        setTimeout(() => {
+            if (formData.name && formData.email && formData.password) {
+                setMessage({
+                    type: "success",
+                    text: "Rejestracja zakończona sukcesem!",
+                });
+            } else {
+                setMessage({
+                    type: "error",
+                    text: "Błąd rejestracji. Wypełnij wszystkie pola.",
+                });
+            }
+            setIsLoading(false);
+        }, 1000);
     };
 
     return (
@@ -47,6 +122,18 @@ export default function RegisterPage() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
+                    {message && (
+                        <div
+                            className={`mb-4 p-3 rounded-md text-sm ${
+                                message.type === "success"
+                                    ? "bg-secondary/10 text-secondary border border-secondary/20"
+                                    : "bg-red-50 text-red-600 border border-red-200"
+                            }`}
+                        >
+                            {message.text}
+                        </div>
+                    )}
+
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="name">Imię i nazwisko</Label>
@@ -113,11 +200,31 @@ export default function RegisterPage() {
                             />
                         </div>
 
+                        <div className="space-y-2">
+                            <Label htmlFor="birthDate">Data urodzenia</Label>
+                            <Input
+                                id="birthDate"
+                                type="date"
+                                value={formData.birthDate}
+                                onChange={(e) =>
+                                    handleChange("birthDate", e.target.value)
+                                }
+                                min={getMinBirthDate()}
+                                max={getMaxBirthDate()}
+                                required
+                                className="focus:ring-2 focus:ring-primary focus:border-primary"
+                            />
+                            <p className="text-xs text-gray-500">
+                                Minimalny wiek: 13 lat
+                            </p>
+                        </div>
+
                         <Button
                             type="submit"
-                            className="w-full bg-secondary hover:bg-secondary/90 text-white transition-colors"
+                            disabled={isLoading}
+                            className="w-full bg-secondary hover:bg-secondary/90 text-white transition-colors disabled:opacity-50"
                         >
-                            Zarejestruj się
+                            {isLoading ? "Rejestrowanie..." : "Zarejestruj się"}
                         </Button>
                     </form>
 
@@ -129,7 +236,7 @@ export default function RegisterPage() {
                             </span>
                             <Link
                                 href="/login"
-                                className="text-sm text-primary hover:text-alt-primary font-medium underline"
+                                className="text-sm text-primary hover:text-alt-primary font-medium underline transition-colors"
                             >
                                 Zaloguj się
                             </Link>
@@ -137,7 +244,7 @@ export default function RegisterPage() {
                         <div className="text-center mt-2">
                             <Link
                                 href="/"
-                                className="text-sm text-accent hover:text-primary underline"
+                                className="text-sm text-primary hover:text-alt-primary underline transition-colors"
                             >
                                 ← Powrót do strony głównej
                             </Link>
