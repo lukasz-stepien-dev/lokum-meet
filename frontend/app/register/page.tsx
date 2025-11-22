@@ -13,6 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import {registerUser} from "@/app/api/auth/[...nextauth]/route";
+import {signIn} from "next-auth/react";
+import {router} from "next/client";
+import {fetchFromApi} from "@/lib/fetch";
 
 export default function RegisterPage() {
     const [formData, setFormData] = useState({
@@ -93,21 +97,45 @@ export default function RegisterPage() {
             return;
         }
 
-        // Simulate API call
-        setTimeout(() => {
-            if (formData.name && formData.email && formData.password) {
-                setMessage({
-                    type: "success",
-                    text: "Rejestracja zakończona sukcesem!",
-                });
-            } else {
-                setMessage({
-                    type: "error",
-                    text: "Błąd rejestracji. Wypełnij wszystkie pola.",
-                });
-            }
+        try {
+            // Rejestracja
+            await fetchFromApi('/auth/addNewUser', {
+                method: 'POST',
+                body: JSON.stringify({
+                    username: formData.name,
+                    email: formData.email,
+                    password: formData.password,
+                    birthdate: formData.birthDate,
+                    bio: "",
+                    avatarUrl: ""
+                })
+            });
+
+            // Logowanie - bezpośrednie wywołanie backendu
+            const loginResponse = await fetchFromApi('/auth/generateToken', {
+                method: 'POST',
+                body: JSON.stringify({
+                    username: formData.email,
+                    password: formData.password
+                })
+            });
+
+            const token = await loginResponse.text();
+
+            // Zapisz token (localStorage lub cookie)
+            localStorage.setItem('authToken', token);
+
+            setMessage({ type: "success", text: "Rejestracja zakończona sukcesem!" });
+            setTimeout(() => window.location.href = "/dashboard", 1500);
+
+        } catch (e) {
+            setMessage({
+                type: "error",
+                text: "Wystąpił błąd podczas rejestracji.",
+            });
+        } finally {
             setIsLoading(false);
-        }, 1000);
+        }
     };
 
     return (

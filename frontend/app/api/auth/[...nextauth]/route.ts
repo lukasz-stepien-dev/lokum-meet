@@ -1,5 +1,20 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth, {NextAuthOptions} from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import {fetchFromApi} from "@/lib/fetch";
+
+export async function registerUser(userData: {
+    username: string;
+    email: string;
+    password: string;
+    birthdate: string;
+    bio: string;
+    avatarUrl: string;
+}) {
+    return await fetchFromApi('/auth/addNewUser', {
+        method: 'POST',
+        body: JSON.stringify(userData),
+    });
+}
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -15,7 +30,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         try {
-          const response = await fetch("http://community-events-backend:8080/auth/generateToken", {
+          const response = await fetch("http://backend:8080/auth/generateToken", {
             method: "POST",
             headers: {
               "Content-Type": "application/json"
@@ -32,7 +47,7 @@ export const authOptions: NextAuthOptions = {
 
           const token = await response.text();
 
-          const profileResponse = await fetch("http://community-events-backend:8080/auth/user/profile", {
+          const profileResponse = await fetch("http://backend:8080/auth/user/profile", {
             headers: {
               "Authorization": `Bearer ${token}`
             }
@@ -45,7 +60,8 @@ export const authOptions: NextAuthOptions = {
             email: user.email,
             name: user.username,
             image: user.avatarUrl,
-            accessToken: token
+            accessToken: token,
+            bio: user.bio
           };
         } catch (error) {
           return null;
