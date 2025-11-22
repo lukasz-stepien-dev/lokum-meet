@@ -15,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+
+import static com.fasterxml.jackson.databind.type.LogicalType.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -44,8 +48,17 @@ public class UserController {
     }
 
     @PostMapping("/user/profile")
-    public Optional<User> profileInfo(Authentication authentication) {
+    public Map<String, Object> profileInfo(Authentication authentication) throws UsernameNotFoundException {
         String username =  authentication.getName();
-        return userRepository.findByEmail(username);
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("email", user.getEmail());
+        map.put("username", user.getUsername());
+        map.put("avatarUrl", user.getAvatarUrl());
+        map.put("bio", user.getBio());
+
+        return map;
     }
 }
