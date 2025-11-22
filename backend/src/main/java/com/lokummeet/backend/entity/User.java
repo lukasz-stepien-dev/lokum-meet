@@ -24,27 +24,48 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
+
+    @Column()
+    private String username;
+
     @Column(nullable = false, unique = true)
     private String email;
+
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
+
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
+
     @Column(nullable = false)
     private int age;
+
     @Column(name = "avatar_url", length = 500)
     private String avatarUrl;
+
     private String bio;
+
     @Column(name = "is_verified")
     private boolean isVerified = false;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "user_roles")
     private Set<UserRoles> userRoles = new HashSet<>();
+
+    @ManyToMany()
+    @JoinTable(
+            name = "user_institution",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "institution_id")
+    )
+    private Set<Institution> institutions;
+
     @Column(name = "created_at")
     @CreatedDate
     private OffsetDateTime createdAt;
+
     @Column(name = "updated_at")
     @LastModifiedDate
     private OffsetDateTime updatedAt;

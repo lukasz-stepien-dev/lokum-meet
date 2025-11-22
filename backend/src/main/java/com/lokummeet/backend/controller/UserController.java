@@ -2,6 +2,7 @@ package com.lokummeet.backend.controller;
 
 import com.lokummeet.backend.entity.AuthRequest;
 import com.lokummeet.backend.entity.User;
+import com.lokummeet.backend.repository.UserRepository;
 import com.lokummeet.backend.service.JwtService;
 import com.lokummeet.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import static com.fasterxml.jackson.databind.type.LogicalType.Map;
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -21,6 +28,7 @@ public class UserController {
     private final UserService userService;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
 
     @PostMapping("/addNewUser")
     public String addNewUser(@RequestBody User user) {
@@ -37,5 +45,20 @@ public class UserController {
         } else {
             throw new UsernameNotFoundException("Invalid user request!");
         }
+    }
+
+    @PostMapping("/user/profile")
+    public Map<String, Object> profileInfo(Authentication authentication) throws UsernameNotFoundException {
+        String username =  authentication.getName();
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("email", user.getEmail());
+        map.put("username", user.getUsername());
+        map.put("avatarUrl", user.getAvatarUrl());
+        map.put("bio", user.getBio());
+
+        return map;
     }
 }
