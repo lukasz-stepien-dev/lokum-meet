@@ -9,6 +9,7 @@ import {Label} from "@/components/ui/label";
 import {Separator} from "@/components/ui/separator";
 import {registerUser} from "@/app/api/auth/[...nextauth]/route";
 import {fetchFromApi} from "@/lib/fetch";
+import {login} from "@/app/actions/auth";
 
 export default function RegisterPage() {
     const [formData, setFormData] = useState({
@@ -109,8 +110,7 @@ export default function RegisterPage() {
                 })
             });
 
-            // Zapisz token (localStorage lub cookie)
-            localStorage.setItem('authToken', loginResponse);
+            await login(loginResponse);
 
             setMessage({ type: "success", text: "Rejestracja zakończona sukcesem!" });
             setTimeout(() => window.location.href = "/dashboard", 1500);

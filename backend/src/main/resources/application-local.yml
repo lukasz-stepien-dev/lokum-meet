@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/community_events_dev
+    username: postgres
+    password: postgres123
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+security:
+  jwt:
+    secret-key: 5367566859703373367639792F423F452848284D6251655468576D5A71347437
+
+minio:
+  url: http://localhost:9000
+  access-key: minio
+  secret-key: minio123

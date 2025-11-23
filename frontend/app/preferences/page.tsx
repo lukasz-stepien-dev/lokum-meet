@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Toggle } from "@/components/ui/toggle";
+import {isNotAuthenticated} from "@/app/actions/auth";
+import {redirect} from "next/navigation";
 
 const eventCategories = [
     { id: "sport", label: "Sport", icon: "⚽" },
@@ -37,6 +39,12 @@ export default function PreferencesPage() {
         type: "success" | "error";
         text: string;
     } | null>(null);
+
+    useEffect(() => {
+        isNotAuthenticated().then(isNotAuthenticated => {
+            isNotAuthenticated && redirect("/");
+        })
+    }, []);
 
     const togglePreference = (categoryId: string) => {
         setSelectedPreferences((prev) =>

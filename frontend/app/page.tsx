@@ -15,7 +15,7 @@ export default function Home() {
             <Card className="w-full max-w-md shadow-xl border-0 bg-white/90 backdrop-blur-sm">
                 <CardHeader className="text-center pb-6">
                     <CardTitle className="text-4xl font-bold text-primary mb-2">
-                        Locum Meet
+                        Lokum Meet
                     </CardTitle>
                     <CardDescription className="text-lg text-gray-600">
                         Witaj! Wybierz opcję aby kontynuować

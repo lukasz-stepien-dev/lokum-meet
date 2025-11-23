@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,9 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import {isNotAuthenticated, logout} from "@/app/actions/auth";
+import {redirect} from "next/navigation";
+import {router} from "next/client";
 
 const sampleEvents = [
     {
@@ -68,8 +71,13 @@ const sampleEvents = [
 
 export default function DashboardPage() {
     const [selectedCategory, setSelectedCategory] = useState<string>("all");
-
     const categories = ["all", "Sport", "Movies", "Hobby", "Music", "Social"]; //kategorie na sztywno (póki co)
+
+    useEffect(() => {
+        isNotAuthenticated().then(isNotAuthenticated => {
+            isNotAuthenticated && redirect("/");
+        })
+    }, []);
 
     const filteredEvents =
         selectedCategory === "all"
@@ -87,7 +95,8 @@ export default function DashboardPage() {
         });
     };
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        await logout();
         console.log("Logging out...");
         window.location.href = "/";
     };

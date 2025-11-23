@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "Locum Meet",
+    title: "Lokum Meet",
     description: "An event app",
 };
 

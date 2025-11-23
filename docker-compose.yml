@@ -1,5 +1,4 @@
 services:
-  # PostgreSQL Database
   postgres:
     image: postgres:16-alpine
     container_name: community-events-postgres
@@ -20,14 +19,13 @@ services:
     networks:
       - community-events-network
 
-  # MinIO Object Storage (S3-compatible)
   minio:
     image: quay.io/minio/minio:latest
     container_name: community-events-minio
     command: server /data --console-address ":9001"
     ports:
       - "9000:9000"
-      - "9002:9002"
+      - "9001:9001"
     environment:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
@@ -41,7 +39,6 @@ services:
     networks:
       - community-events-network
 
-  # MinIO Client - Creates buckets automatically
   minio-client:
     image: minio/mc:latest
     container_name: community-events-mc
@@ -59,10 +56,10 @@ services:
     networks:
       - community-events-network
 
-  # Spring Boot Application
+  # Backend dla produkcji
   backend:
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile
     container_name: community-events-backend
     depends_on:
@@ -76,30 +73,17 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/community_events_dev
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres123
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
-      SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
-      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
-      SPRING_JPA_SHOW_SQL: "false"
-      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
       JWT_SECRET: your-super-secret-key-minimum-32-characters-long-for-jwt
-      JWT_EXPIRATION: 86400000
-      CORS_ALLOWED_ORIGINS: http://localhost:3000,http://frontend:3000
-      STORAGE_TYPE: minio
       MINIO_URL: http://minio:9000
       MINIO_ACCESS_KEY: minio
       MINIO_SECRET_KEY: minio123
-      MINIO_BUCKET_PREFIX: community-events
     ports:
       - "8080:8080"
     networks:
       - community-events-network
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    profiles:
+      - prod
 
-  # React Frontend (Production Build)
   frontend:
     build:
       context: ./frontend
@@ -112,9 +96,29 @@ services:
       VITE_MINIO_URL: http://localhost:9000
     ports:
       - "3000:3000"
-    # REMOVED: volumes for production build
     networks:
       - community-events-network
+    profiles:
+      - prod
+
+  frontend-dev:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: community-events-frontend-dev
+    environment:
+      VITE_API_BASE_URL: http://localhost:8080
+      VITE_MINIO_URL: http://localhost:9000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    networks:
+      - community-events-network
+    profiles:
+      - dev
 
 volumes:
   postgres_data:
