@@ -13,10 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import {signIn} from "next-auth/react";
-import {redirect} from "next/navigation";
-import {login} from "@/app/actions/auth";
-import {fetchFromApi} from "@/lib/fetch";
+import { signIn } from "next-auth/react";
+import { redirect } from "next/navigation";
+import { login } from "@/app/actions/auth";
+import { fetchFromApi } from "@/lib/fetch";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -27,25 +27,42 @@ export default function LoginPage() {
         text: string;
     } | null>(null);
 
+    const sanitizeInput = (value: string) => {
+        return value
+            .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+            .replace(/<[^>]+>/g, "")
+            .trim();
+    };
+
+    const handleEmailChange = (value: string) => {
+        const sanitizedValue = sanitizeInput(value);
+        setEmail(sanitizedValue);
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
         try {
-            const authToken: string = await fetchFromApi('/auth/generateToken', {
-                method: 'POST',
-                body: JSON.stringify({
-                    username: email,
-                    password: password
-                })
-            });
+            const authToken: string = await fetchFromApi(
+                "/auth/generateToken",
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        username: email,
+                        password: password,
+                    }),
+                }
+            );
 
             await login(authToken);
 
             setMessage({ type: "success", text: "Zalogowano pomyślnie!" });
-            setTimeout(() => window.location.href = "/dashboard", 500);
-
+            setTimeout(() => (window.location.href = "/dashboard"), 500);
         } catch (e) {
-            setMessage({ type: "error", text: "Nieprawidłowy email lub hasło." });
+            setMessage({
+                type: "error",
+                text: "Nieprawidłowy email lub hasło.",
+            });
         } finally {
             setIsLoading(false);
         }
@@ -83,7 +100,9 @@ export default function LoginPage() {
                                 type="email"
                                 placeholder="nazwa@email.com"
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                onChange={(e) =>
+                                    handleEmailChange(e.target.value)
+                                }
                                 required
                                 className="focus:ring-2 focus:ring-primary focus:border-primary"
                             />

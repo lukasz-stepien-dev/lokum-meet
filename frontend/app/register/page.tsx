@@ -1,15 +1,21 @@
 "use client";
 
-import {useState} from "react";
+import { useState } from "react";
 import Link from "next/link";
-import {Button} from "@/components/ui/button";
-import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/components/ui/card";
-import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
-import {Separator} from "@/components/ui/separator";
-import {registerUser} from "@/app/api/auth/[...nextauth]/route";
-import {fetchFromApi} from "@/lib/fetch";
-import {login} from "@/app/actions/auth";
+import { Button } from "@/components/ui/button";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { registerUser } from "@/app/api/auth/[...nextauth]/route";
+import { fetchFromApi } from "@/lib/fetch";
+import { login } from "@/app/actions/auth";
 
 export default function RegisterPage() {
     const [formData, setFormData] = useState({
@@ -25,8 +31,44 @@ export default function RegisterPage() {
         text: string;
     } | null>(null);
 
+    const sanitizeInput = (value: string) => {
+        return value
+            .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+            .replace(/<[^>]+>/g, "")
+            .trim();
+    };
+
+    const validateInput = (field: string, value: string) => {
+        const sanitized = sanitizeInput(value);
+
+        switch (field) {
+            case "name":
+                if (sanitized.length < 2)
+                    return "Imię musi mieć minimum 2 znaki";
+                if (sanitized.length > 50)
+                    return "Imię nie może przekraczać 50 znaków";
+                if (!/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\s]+$/.test(sanitized))
+                    return "Imię może zawierać tylko litery";
+                break;
+            case "email":
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sanitized))
+                    return "Nieprawidłowy format email";
+                break;
+            case "password":
+                if (value.length < 8) return "Hasło musi mieć minimum 8 znaków";
+                if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(value))
+                    return "Hasło musi zawierać małą literę, wielką literę i cyfrę";
+                break;
+        }
+        return null;
+    };
+
     const handleChange = (field: string, value: string) => {
-        setFormData((prev) => ({ ...prev, [field]: value }));
+        const sanitizedValue =
+            field === "password" || field === "confirmPassword"
+                ? value
+                : sanitizeInput(value);
+        setFormData((prev) => ({ ...prev, [field]: sanitizedValue }));
     };
 
     // Calculate max birth date (13 years ago from today)
@@ -98,23 +140,30 @@ export default function RegisterPage() {
                 birthDate: formData.birthDate,
                 bio: "",
                 avatarUrl: "",
-                age: new Date().getFullYear() - new Date(formData.birthDate).getFullYear(),
-            })
+                age:
+                    new Date().getFullYear() -
+                    new Date(formData.birthDate).getFullYear(),
+            });
 
             // Logowanie - bezpośrednie wywołanie backendu
-            const loginResponse: string = await fetchFromApi('/auth/generateToken', {
-                method: 'POST',
-                body: JSON.stringify({
-                    username: formData.email,
-                    password: formData.password
-                })
-            });
+            const loginResponse: string = await fetchFromApi(
+                "/auth/generateToken",
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        username: formData.email,
+                        password: formData.password,
+                    }),
+                }
+            );
 
             await login(loginResponse);
 
-            setMessage({ type: "success", text: "Rejestracja zakończona sukcesem!" });
-            setTimeout(() => window.location.href = "/dashboard", 1500);
-
+            setMessage({
+                type: "success",
+                text: "Rejestracja zakończona sukcesem!",
+            });
+            setTimeout(() => (window.location.href = "/dashboard"), 1500);
         } catch (e) {
             setMessage({
                 type: "error",

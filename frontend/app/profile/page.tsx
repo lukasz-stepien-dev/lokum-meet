@@ -35,8 +35,48 @@ export default function ProfilePage() {
         text: string;
     } | null>(null);
 
+    const sanitizeInput = (value: string) => {
+        return value
+            .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+            .replace(/<[^>]+>/g, "")
+            .replace(/javascript:/gi, "")
+            .replace(/on\w+\s*=/gi, "")
+            .trim();
+    };
+
+    const validateField = (field: string, value: string) => {
+        const sanitized = sanitizeInput(value);
+
+        switch (field) {
+            case "name":
+                if (sanitized.length < 2)
+                    return "Imię musi mieć minimum 2 znaki";
+                if (!/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\s]+$/.test(sanitized))
+                    return "Imię może zawierać tylko litery";
+                break;
+            case "email":
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sanitized))
+                    return "Nieprawidłowy format email";
+                break;
+            case "location":
+                if (sanitized.length > 50)
+                    return "Lokalizacja nie może przekraczać 50 znaków";
+                break;
+            case "bio":
+                if (sanitized.length > 500)
+                    return "Bio nie może przekraczać 500 znaków";
+                break;
+        }
+        return null;
+    };
+
     const handleChange = (field: string, value: string) => {
-        setFormData((prev) => ({ ...prev, [field]: value }));
+        const sanitizedValue = sanitizeInput(value);
+        const error = validateField(field, sanitizedValue);
+
+        if (!error) {
+            setFormData((prev) => ({ ...prev, [field]: sanitizedValue }));
+        }
     };
 
     const handleSave = () => {
