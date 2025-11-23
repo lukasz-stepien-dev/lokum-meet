@@ -14,5 +14,9 @@ export async function fetchFromApi(endpoint: string, options: RequestInit = {}) 
         throw new Error(`API request failed with status ${response.status}`);
     }
 
-    return response.json();
+    if (response.headers.get('Content-Type')?.includes('application/json')) {
+        return response.json();
+    }
+
+    return response.text();
 }

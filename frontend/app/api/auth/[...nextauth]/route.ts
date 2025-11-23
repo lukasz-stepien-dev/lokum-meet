@@ -5,9 +5,10 @@ import {fetchFromApi} from "@/lib/fetch";
 export async function registerUser(userData: {
     username: string;
     email: string;
-    password: string;
-    birthdate: string;
+    passwordHash: string;
+    birthDate: string;
     bio: string;
+    age: number;
     avatarUrl: string;
 }) {
     return await fetchFromApi('/auth/addNewUser', {

@@ -1,21 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import {useState} from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/components/ui/card";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {Separator} from "@/components/ui/separator";
 import {registerUser} from "@/app/api/auth/[...nextauth]/route";
-import {signIn} from "next-auth/react";
-import {router} from "next/client";
 import {fetchFromApi} from "@/lib/fetch";
 
 export default function RegisterPage() {
@@ -98,21 +90,18 @@ export default function RegisterPage() {
         }
 
         try {
-            // Rejestracja
-            await fetchFromApi('/auth/addNewUser', {
-                method: 'POST',
-                body: JSON.stringify({
-                    username: formData.name,
-                    email: formData.email,
-                    password: formData.password,
-                    birthdate: formData.birthDate,
-                    bio: "",
-                    avatarUrl: ""
-                })
-            });
+            await registerUser({
+                username: formData.name,
+                email: formData.email,
+                passwordHash: formData.password,
+                birthDate: formData.birthDate,
+                bio: "",
+                avatarUrl: "",
+                age: new Date().getFullYear() - new Date(formData.birthDate).getFullYear(),
+            })
 
             // Logowanie - bezpośrednie wywołanie backendu
-            const loginResponse = await fetchFromApi('/auth/generateToken', {
+            const loginResponse: string = await fetchFromApi('/auth/generateToken', {
                 method: 'POST',
                 body: JSON.stringify({
                     username: formData.email,
@@ -120,10 +109,8 @@ export default function RegisterPage() {
                 })
             });
 
-            const token = await loginResponse.text();
-
             // Zapisz token (localStorage lub cookie)
-            localStorage.setItem('authToken', token);
+            localStorage.setItem('authToken', loginResponse);
 
             setMessage({ type: "success", text: "Rejestracja zakończona sukcesem!" });
             setTimeout(() => window.location.href = "/dashboard", 1500);

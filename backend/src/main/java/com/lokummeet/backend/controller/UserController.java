@@ -6,6 +6,7 @@ import com.lokummeet.backend.repository.UserRepository;
 import com.lokummeet.backend.service.JwtService;
 import com.lokummeet.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -31,7 +32,7 @@ public class UserController {
     private final UserRepository userRepository;
 
     @PostMapping("/addNewUser")
-    public String addNewUser(@RequestBody User user) {
+    public ResponseEntity<Object> addNewUser(@RequestBody User user) {
         return userService.addUser(user);
     }
 

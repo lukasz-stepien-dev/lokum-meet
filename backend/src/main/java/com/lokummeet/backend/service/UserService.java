@@ -3,6 +3,7 @@ package com.lokummeet.backend.service;
 import com.lokummeet.backend.entity.User;
 import com.lokummeet.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,9 +35,9 @@ public class UserService implements UserDetailsService {
                 .build();
     }
 
-    public String addUser(User user) {
+    public ResponseEntity<Object> addUser(User user) {
         user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
         userRepository.save(user);
-        return "User added successfully";
+        return ResponseEntity.ok().build();
     }
 }
