@@ -13,6 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import {signIn} from "next-auth/react";
+import {redirect} from "next/navigation";
+import {login} from "@/app/actions/auth";
+import {fetchFromApi} from "@/lib/fetch";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -26,24 +30,25 @@ export default function LoginPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
-        setMessage(null);
+        try {
+            const authToken: string = await fetchFromApi('/auth/generateToken', {
+                method: 'POST',
+                body: JSON.stringify({
+                    username: email,
+                    password: password
+                })
+            });
 
-        // Simulate API call
-        setTimeout(() => {
-            // Mock success/error logic
-            if (email && password) {
-                setMessage({
-                    type: "success",
-                    text: "Logowanie zakończone sukcesem!",
-                });
-            } else {
-                setMessage({
-                    type: "error",
-                    text: "Błąd logowania. Sprawdź dane.",
-                });
-            }
+            await login(authToken);
+
+            setMessage({ type: "success", text: "Zalogowano pomyślnie!" });
+            setTimeout(() => window.location.href = "/dashboard", 500);
+
+        } catch (e) {
+            setMessage({ type: "error", text: "Nieprawidłowy email lub hasło." });
+        } finally {
             setIsLoading(false);
-        }, 1000);
+        }
     };
 
     return (

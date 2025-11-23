@@ -74,9 +74,7 @@ export default function DashboardPage() {
     const categories = ["all", "Sport", "Movies", "Hobby", "Music", "Social"]; //kategorie na sztywno (póki co)
 
     useEffect(() => {
-        isNotAuthenticated().then(isNotAuthenticated => {
-            isNotAuthenticated && redirect("/");
-        })
+
     }, []);
 
     const filteredEvents =
