@@ -131,7 +131,7 @@ export default function RegisterPage() {
         } catch (e) {
             setMessage({
                 type: "error",
-                text: "Wystąpił błąd podczas rejestracji.",
+                text: `Błąd podczas rejestracji: ${(e as Error).message}`,
             });
         } finally {
             setIsLoading(false);
