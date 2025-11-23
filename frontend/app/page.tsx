@@ -54,6 +54,12 @@ export default function Home() {
                         >
                             Ustaw preferencje wydarzeń
                         </Link>
+                        <Link
+                            href="/create-institution"
+                            className="text-sm text-primary hover:text-alt-primary underline transition-colors duration-200 font-medium"
+                        >
+                            Utwórz instytucję
+                        </Link>
                     </div>
                 </CardContent>
             </Card>

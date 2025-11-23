@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -12,9 +12,9 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import {isNotAuthenticated, logout} from "@/app/actions/auth";
-import {redirect} from "next/navigation";
-import {router} from "next/client";
+import { isNotAuthenticated, logout } from "@/app/actions/auth";
+import { redirect } from "next/navigation";
+import { router } from "next/client";
 
 const sampleEvents = [
     {
@@ -31,7 +31,7 @@ const sampleEvents = [
         id: 2,
         title: "Wieczór Filmowy",
         category: "Movies",
-        date: "2024-02-18",
+        date: "2026-02-18",
         description:
             "Oglądanie najlepszych filmów roku w towarzystwie innych kinomaniaków. Popcorn zapewniony!",
         image: "/api/placeholder/400/200",
@@ -71,11 +71,13 @@ const sampleEvents = [
 
 export default function DashboardPage() {
     const [selectedCategory, setSelectedCategory] = useState<string>("all");
+    const [message, setMessage] = useState<{
+        type: "success" | "error";
+        text: string;
+    } | null>(null);
     const categories = ["all", "Sport", "Movies", "Hobby", "Music", "Social"]; //kategorie na sztywno (póki co)
 
-    useEffect(() => {
-
-    }, []);
+    useEffect(() => {}, []);
 
     const filteredEvents =
         selectedCategory === "all"
@@ -99,6 +101,22 @@ export default function DashboardPage() {
         window.location.href = "/";
     };
 
+    const isEventPast = (eventDate: string) => {
+        const today = new Date();
+        const event = new Date(eventDate);
+        today.setHours(0, 0, 0, 0);
+        event.setHours(0, 0, 0, 0);
+        return event < today;
+    };
+
+    const handleJoinEvent = (eventTitle: string) => {
+        setMessage({
+            type: "success",
+            text: `Pomyślnie dołączono do wydarzenia: ${eventTitle}`,
+        });
+        setTimeout(() => setMessage(null), 3000);
+    };
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-background to-accent/10 p-4">
             <div className="max-w-6xl mx-auto">
@@ -111,14 +129,36 @@ export default function DashboardPage() {
                             Odkryj interesujące wydarzenia w Twojej okolicy
                         </p>
                     </div>
-                    <Button
-                        onClick={handleLogout}
-                        variant="outline"
-                        className="absolute top-0 right-0 border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-colors"
-                    >
-                        Wyloguj się
-                    </Button>
+                    <div className="absolute top-0 right-0 flex gap-2">
+                        <Link href="/profile">
+                            <Button
+                                variant="outline"
+                                className="border-primary text-primary hover:bg-primary hover:text-white transition-colors"
+                            >
+                                Profil
+                            </Button>
+                        </Link>
+                        <Button
+                            onClick={handleLogout}
+                            variant="outline"
+                            className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-colors"
+                        >
+                            Wyloguj się
+                        </Button>
+                    </div>
                 </div>
+
+                {message && (
+                    <div
+                        className={`mb-6 p-3 rounded-md text-sm ${
+                            message.type === "success"
+                                ? "bg-secondary/10 text-secondary border border-secondary/20"
+                                : "bg-red-50 text-red-600 border border-red-200"
+                        }`}
+                    >
+                        {message.text}
+                    </div>
+                )}
 
                 <div className="mb-8 flex flex-wrap justify-center gap-2">
                     {categories.map((category) => (
@@ -175,19 +215,34 @@ export default function DashboardPage() {
                                 </p>
 
                                 <div className="flex gap-2">
-                                    <Button
-                                        className="flex-1 bg-secondary hover:bg-secondary/90 text-white"
-                                        size="sm"
-                                    >
-                                        Dołącz
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        className="border-primary text-primary hover:bg-primary hover:text-white"
-                                        size="sm"
-                                    >
-                                        Szczegóły
-                                    </Button>
+                                    {isEventPast(event.date) ? (
+                                        <Button
+                                            disabled
+                                            className="flex-1 bg-gray-400 text-gray-600 cursor-not-allowed"
+                                            size="sm"
+                                        >
+                                            Zakończone
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            onClick={() =>
+                                                handleJoinEvent(event.title)
+                                            }
+                                            className="flex-1 bg-secondary hover:bg-secondary/90 text-white"
+                                            size="sm"
+                                        >
+                                            Dołącz
+                                        </Button>
+                                    )}
+                                    <Link href={`/event/${event.id}`}>
+                                        <Button
+                                            variant="outline"
+                                            className="border-primary text-primary hover:bg-primary hover:text-white"
+                                            size="sm"
+                                        >
+                                            Szczegóły
+                                        </Button>
+                                    </Link>
                                 </div>
                             </CardContent>
                         </Card>
