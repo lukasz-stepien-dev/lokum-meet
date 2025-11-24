@@ -1,4 +1,3 @@
-# Sekcja dla baz danych zarządzanych przez Render
 databases:
   - name: community-events-db
     databaseName: community_events_dev
@@ -6,35 +5,13 @@ databases:
     plan: free
 
 services:
-  # 1. MinIO (Object Storage - jako serwis webowy z dyskiem)
-  - type: web
-    name: community-events-minio
-    runtime: docker
-    image: quay.io/minio/minio:latest
-    plan: free
-    envVars:
-      - key: MINIO_ROOT_USER
-        value: minio
-      - key: MINIO_ROOT_PASSWORD
-        generateValue: true
-      - key: MINIO_VOLUMES
-        value: "/data"
-    disk:
-      name: minio-data
-      mountPath: /data
-      sizeGB: 1
-    # Uruchamiamy serwer na porcie API (9000). Port konsoli (9001) nie będzie dostępny publicznie w darmowym planie.
-    startCommand: server /data --console-address ":9001" --address ":0.0.0.0:9000"
-    healthCheckPath: /minio/health/live
-
-  # 2. Backend (Spring Boot)
+  # Backend (Spring Boot)
   - type: web
     name: community-events-backend
     runtime: docker
-    context: .             # Kontekst to główny katalog (tam gdzie backend)
-    dockerfilePath: ./backend/Dockerfile # Ścieżka do Dockerfile (skoro jest w podkatalogu)
+    # Render domyślnie buduje z głównego katalogu, więc wskazujemy tylko plik:
+    dockerfilePath: ./backend/Dockerfile
     plan: free
-    # Backend zależy od bazy i minio
     envVars:
       - key: SPRING_APPLICATION_NAME
         value: community-events
@@ -45,7 +22,7 @@ services:
       - key: PORT
         value: 8080
 
-      # Konfiguracja Bazy Danych (Pobieramy dane z sekcji databases)
+      # Pobieranie danych do bazy z sekcji 'databases'
       - key: DB_HOST
         fromDatabase:
           name: community-events-db
@@ -67,43 +44,21 @@ services:
           name: community-events-db
           property: password
 
-      # Konfiguracja MinIO (Łączymy się po wewnętrznej sieci Rendera)
-      - key: MINIO_URL
-        fromService:
-          type: web
-          name: community-events-minio
-          env: PORT
-          value: "http://${host}:${port}"
-      - key: MINIO_ACCESS_KEY
-        value: minio
-      - key: MINIO_SECRET_KEY
-        fromService:
-          type: web
-          name: community-events-minio
-          env: MINIO_ROOT_PASSWORD
-
-    # Nadpisujemy komendę startową, aby ręcznie skleić JDBC URL (Render nie daje formatu jdbc: domyślnie)
+    # Składamy poprawny URL JDBC przy starcie
     startCommand: java -jar app.jar --spring.datasource.url=jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
 
-  # 3. Frontend (Next.js)
+  # Frontend (Next.js)
   - type: web
     name: community-events-frontend
     runtime: docker
-    context: .
     dockerfilePath: ./frontend/Dockerfile
     plan: free
     envVars:
       - key: PORT
         value: 3000
-      # URL do Backendu (musi być publiczny, bo frontend działa w przeglądarce)
+      # Łączymy frontend z backendem
       - key: VITE_API_BASE_URL
         fromService:
           type: web
           name: community-events-backend
-          env: RENDER_EXTERNAL_URL
-      # URL do MinIO (też publiczny do wyświetlania obrazków)
-      - key: VITE_MINIO_URL
-        fromService:
-          type: web
-          name: community-events-minio
           env: RENDER_EXTERNAL_URL
