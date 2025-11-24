@@ -1,55 +1,63 @@
-services:
-  # 1. Baza danych (Render Managed PostgreSQL)
-  # Render zarządza bazą za nas, jest wydajniejsza niż kontener Docker
-  - type: psql
-    name: community-events-db
-    env: docker
-    plan: free # Dostępny plan darmowy
+# Sekcja dla baz danych zarządzanych przez Render
+databases:
+  - name: community-events-db
     databaseName: community_events_dev
     user: postgres
+    plan: free
 
-  # 2. MinIO (Object Storage)
-  # W Renderze kontenery są ulotne, więc musimy dodać DYSK, aby dane przetrwały restart.
+services:
+  # 1. MinIO (Object Storage - jako serwis webowy z dyskiem)
   - type: web
     name: community-events-minio
     runtime: docker
-    # Wskazujemy obraz bezpośrednio z Docker Hub/Quay, nie budujemy go
     image: quay.io/minio/minio:latest
     plan: free
     envVars:
       - key: MINIO_ROOT_USER
         value: minio
       - key: MINIO_ROOT_PASSWORD
-        generateValue: true # Render wygeneruje bezpieczne hasło
-      - key: PORT
-        value: 9000
+        generateValue: true
+      - key: MINIO_VOLUMES
+        value: "/data"
     disk:
       name: minio-data
       mountPath: /data
       sizeGB: 1
-    startCommand: server /data --console-address ":9001" --address ":9000"
-    # UWAGA: Render udostępnia publicznie tylko jeden port. Tutaj będzie to API (9000).
-    # Konsola (9001) nie będzie dostępna z zewnątrz w darmowym planie w prosty sposób.
+    # Uruchamiamy serwer na porcie API (9000). Port konsoli (9001) nie będzie dostępny publicznie w darmowym planie.
+    startCommand: server /data --console-address ":9001" --address ":0.0.0.0:9000"
+    healthCheckPath: /minio/health/live
 
-  # 3. Backend (Spring Boot)
+  # 2. Backend (Spring Boot)
   - type: web
     name: community-events-backend
     runtime: docker
-    context: backend # Wskazujemy folder backendu jako kontekst budowania
-    dockerfilePath: ./Dockerfile # Ścieżka wewnątrz folderu backend
+    context: .             # Kontekst to główny katalog (tam gdzie backend)
+    dockerfilePath: ./backend/Dockerfile # Ścieżka do Dockerfile (skoro jest w podkatalogu)
     plan: free
+    # Backend zależy od bazy i minio
     envVars:
       - key: SPRING_APPLICATION_NAME
         value: community-events
       - key: SPRING_PROFILES_ACTIVE
         value: prod
+      - key: JWT_SECRET
+        generateValue: true
       - key: PORT
         value: 8080
-      # Połączenie do bazy danych (Render wstrzyknie DATABASE_URL automatycznie, ale Spring woli JDBC)
-      - key: SPRING_DATASOURCE_URL
+
+      # Konfiguracja Bazy Danych (Pobieramy dane z sekcji databases)
+      - key: DB_HOST
         fromDatabase:
           name: community-events-db
-          property: connectionString
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: community-events-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: community-events-db
+          property: database
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: community-events-db
@@ -58,13 +66,14 @@ services:
         fromDatabase:
           name: community-events-db
           property: password
-      # Konfiguracja MinIO (Internal URL jest szybszy i darmowy wewnątrz sieci Render)
+
+      # Konfiguracja MinIO (Łączymy się po wewnętrznej sieci Rendera)
       - key: MINIO_URL
         fromService:
           type: web
           name: community-events-minio
-          env: PORT # Zwróci np. host:9000
-          value: "http://${host}:${port}" # Render podstawi hosta wewnętrznego
+          env: PORT
+          value: "http://${host}:${port}"
       - key: MINIO_ACCESS_KEY
         value: minio
       - key: MINIO_SECRET_KEY
@@ -72,34 +81,29 @@ services:
           type: web
           name: community-events-minio
           env: MINIO_ROOT_PASSWORD
-      - key: JWT_SECRET
-        generateValue: true
 
-  # 4. Frontend (Next.js)
+    # Nadpisujemy komendę startową, aby ręcznie skleić JDBC URL (Render nie daje formatu jdbc: domyślnie)
+    startCommand: java -jar app.jar --spring.datasource.url=jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+
+  # 3. Frontend (Next.js)
   - type: web
     name: community-events-frontend
     runtime: docker
-    context: frontend
-    dockerfilePath: ./Dockerfile
+    context: .
+    dockerfilePath: ./frontend/Dockerfile
     plan: free
     envVars:
       - key: PORT
         value: 3000
-      # To musi być PUBLICZNY URL backendu, bo frontend działa w przeglądarce użytkownika
+      # URL do Backendu (musi być publiczny, bo frontend działa w przeglądarce)
       - key: VITE_API_BASE_URL
         fromService:
           type: web
           name: community-events-backend
-          env: RENDER_EXTERNAL_URL # Publiczny URL backendu (https://...)
-      # URL do obrazków (publiczny)
+          env: RENDER_EXTERNAL_URL
+      # URL do MinIO (też publiczny do wyświetlania obrazków)
       - key: VITE_MINIO_URL
         fromService:
           type: web
           name: community-events-minio
           env: RENDER_EXTERNAL_URL
-
-databases:
-  - name: community-events-db
-    databaseName: community_events_dev
-    user: postgres
-    plan: free
