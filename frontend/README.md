@@ -1,36 +1,192 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lokum Meet Frontend
+
+A modern event management platform built with Next.js, React, and TypeScript.
+
+## Features
+
+- 🔐 **Authentication** - Secure JWT-based authentication
+- 📅 **Event Management** - Create, browse, and join events
+- 🏢 **Institution Support** - Connect events with verified institutions
+- 👥 **User Profiles** - Manage your profile and preferences
+- 🎯 **Category Filtering** - Filter events by category
+- 📱 **Responsive Design** - Works on all devices
+
+## Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **UI**: React 19, Tailwind CSS
+- **Components**: shadcn/ui
+- **Authentication**: JWT tokens with HTTP-only cookies
+- **API Client**: Custom fetch wrapper with error handling
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+ and pnpm
+- Backend API running on port 8080
+
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# Install dependencies
+pnpm install
+
+# Run development server
 pnpm dev
-# or
-bun dev
+
+# Build for production
+pnpm build
+
+# Start production server
+pnpm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app will be available at `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+frontend/
+├── app/                          # Next.js app directory
+│   ├── login/                    # Login page
+│   ├── register/                 # Registration page
+│   ├── dashboard/                # Main dashboard
+│   ├── profile/                  # User profile
+│   ├── create-event/             # Create event page
+│   ├── event/[id]/               # Event details page
+│   ├── create-institution/       # Create institution page
+│   └── actions/                  # Server actions
+├── components/                   # React components
+│   └── ui/                       # shadcn/ui components
+├── lib/                          # Utility libraries
+│   ├── api/                      # API client modules
+│   │   ├── auth.ts              # Authentication API
+│   │   ├── events.ts            # Events API
+│   │   ├── event-attendees.ts   # Event attendees API
+│   │   └── institutions.ts      # Institutions API
+│   ├── fetch.ts                 # HTTP client
+│   └── utils.ts                 # Utility functions
+└── types/                        # TypeScript type definitions
+    └── api.ts                    # API types
+```
 
-## Learn More
+## API Integration
 
-To learn more about Next.js, take a look at the following resources:
+The frontend integrates with the Lokum Meet backend API. See [API_INTEGRATION.md](./API_INTEGRATION.md) for detailed documentation.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Quick Example
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```typescript
+import { eventsApiClient } from '@/lib/api';
 
-## Deploy on Vercel
+// Get all upcoming events
+const events = await eventsApiClient.getUpcoming();
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+// Join an event
+await eventAttendeesApiClient.join(eventId);
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+// Create an event
+await eventsApiClient.create({
+    title: "My Event",
+    description: "Event description",
+    location: "Park",
+    dateEvent: "2024-12-01",
+    startTime: "2024-12-01T10:00:00",
+    endTime: "2024-12-01T12:00:00",
+    maxCapacity: 50,
+    category: "SPORTS",
+    minAge: 13,
+    maxAge: 150
+});
+```
+
+## Available Scripts
+
+- `pnpm dev` - Start development server
+- `pnpm build` - Build for production
+- `pnpm start` - Start production server
+- `pnpm lint` - Run ESLint
+
+## Environment Variables
+
+Create a `.env.local` file:
+
+```env
+# Backend API URL (optional, defaults to localhost:8080)
+NEXT_PUBLIC_API_URL=http://localhost:8080
+```
+
+## Pages
+
+### Public Pages
+
+- `/` - Landing page
+- `/login` - User login
+- `/register` - User registration
+
+### Protected Pages
+
+- `/dashboard` - Browse and filter events
+- `/profile` - User profile management
+- `/create-event` - Create new event
+- `/event/[id]` - Event details and attendees
+- `/create-institution` - Add new institution (requires permission)
+
+## Features in Detail
+
+### Authentication
+
+- JWT-based authentication
+- HTTP-only cookies for security
+- Automatic token refresh
+- Protected routes with middleware
+
+### Event Management
+
+- Create events with rich details
+- Filter by category
+- Join/leave events
+- View attendee lists
+- Capacity management
+- Age restrictions
+
+### User Profile
+
+- Update username and bio
+- Avatar support
+- View account details
+- Quick access to features
+
+### Institution Support
+
+- Create and manage institutions
+- Verification workflow
+- Link events to institutions
+- Institution categories
+
+## Security
+
+- Input sanitization on all forms
+- XSS protection
+- CSRF protection via HTTP-only cookies
+- Client and server-side validation
+- Secure password requirements
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is part of the Lokum Meet platform.
+
+## Support
+
+For issues and questions, please create an issue in the repository.
+

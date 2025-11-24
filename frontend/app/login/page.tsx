@@ -13,10 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { signIn } from "next-auth/react";
-import { redirect } from "next/navigation";
 import { login } from "@/app/actions/auth";
-import { fetchFromApi } from "@/lib/fetch";
+import { authApi } from "@/lib/api";
+import { ApiError } from "@/lib/fetch";
+import { sanitizeInput } from "@/lib/utils";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -27,13 +27,6 @@ export default function LoginPage() {
         text: string;
     } | null>(null);
 
-    const sanitizeInput = (value: string) => {
-        return value
-            .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
-            .replace(/<[^>]+>/g, "")
-            .trim();
-    };
-
     const handleEmailChange = (value: string) => {
         const sanitizedValue = sanitizeInput(value);
         setEmail(sanitizedValue);
@@ -42,27 +35,32 @@ export default function LoginPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
-        try {
-            const authToken: string = await fetchFromApi(
-                "/auth/generateToken",
-                {
-                    method: "POST",
-                    body: JSON.stringify({
-                        username: email,
-                        password: password,
-                    }),
-                }
-            );
+        setMessage(null);
 
-            await login(authToken);
+        try {
+            const response = await authApi.login({
+                username: email,
+                password: password,
+            });
+
+            await login(response.token);
 
             setMessage({ type: "success", text: "Zalogowano pomyślnie!" });
             setTimeout(() => (window.location.href = "/dashboard"), 500);
-        } catch (e) {
-            setMessage({
-                type: "error",
-                text: "Nieprawidłowy email lub hasło.",
-            });
+        } catch (error) {
+            if (error instanceof ApiError) {
+                setMessage({
+                    type: "error",
+                    text: error.status === 401
+                        ? "Nieprawidłowy email lub hasło."
+                        : "Wystąpił błąd podczas logowania.",
+                });
+            } else {
+                setMessage({
+                    type: "error",
+                    text: "Wystąpił błąd podczas logowania.",
+                });
+            }
         } finally {
             setIsLoading(false);
         }

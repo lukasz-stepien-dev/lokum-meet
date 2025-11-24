@@ -13,9 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { registerUser } from "@/app/api/auth/[...nextauth]/route";
-import { fetchFromApi } from "@/lib/fetch";
 import { login } from "@/app/actions/auth";
+import { authApi } from "@/lib/api";
+import { ApiError } from "@/lib/fetch";
+import { sanitizeInput } from "@/lib/utils";
 
 export default function RegisterPage() {
     const [formData, setFormData] = useState({
@@ -30,13 +31,6 @@ export default function RegisterPage() {
         type: "success" | "error";
         text: string;
     } | null>(null);
-
-    const sanitizeInput = (value: string) => {
-        return value
-            .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
-            .replace(/<[^>]+>/g, "")
-            .trim();
-    };
 
     const validateInput = (field: string, value: string) => {
         const sanitized = sanitizeInput(value);
@@ -133,42 +127,39 @@ export default function RegisterPage() {
         }
 
         try {
-            await registerUser({
+            // Register user
+            const registerResponse = await authApi.register({
                 username: formData.name,
                 email: formData.email,
-                passwordHash: formData.password,
+                password: formData.password,
                 birthDate: formData.birthDate,
                 bio: "",
-                avatarUrl: "",
-                age:
-                    new Date().getFullYear() -
-                    new Date(formData.birthDate).getFullYear(),
+                userRoles: ["ROLE_USER"]
             });
 
-            // Logowanie - bezpośrednie wywołanie backendu
-            const loginResponse: string = await fetchFromApi(
-                "/auth/generateToken",
-                {
-                    method: "POST",
-                    body: JSON.stringify({
-                        username: formData.email,
-                        password: formData.password,
-                    }),
-                }
-            );
-
-            await login(loginResponse);
+            // Store the token from registration response
+            await login(registerResponse.token);
 
             setMessage({
                 type: "success",
                 text: "Rejestracja zakończona sukcesem!",
             });
             setTimeout(() => (window.location.href = "/dashboard"), 1500);
-        } catch (e) {
-            setMessage({
-                type: "error",
-                text: `Błąd podczas rejestracji: ${(e as Error).message}`,
-            });
+        } catch (error) {
+            if (error instanceof ApiError) {
+                const errorMessage = typeof error.details === 'string'
+                    ? error.details
+                    : JSON.stringify(error.details);
+                setMessage({
+                    type: "error",
+                    text: `Błąd podczas rejestracji: ${errorMessage}`,
+                });
+            } else {
+                setMessage({
+                    type: "error",
+                    text: "Wystąpił błąd podczas rejestracji.",
+                });
+            }
         } finally {
             setIsLoading(false);
         }

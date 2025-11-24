@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,110 +10,93 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { isNotAuthenticated, logout } from "@/app/actions/auth";
-import { redirect } from "next/navigation";
-import { router } from "next/client";
+import { logout } from "@/app/actions/auth";
+import { eventsApiClient, eventAttendeesApiClient } from "@/lib/api";
+import { EventDTO, EventCategory } from "@/types/api";
+import { ApiError } from "@/lib/fetch";
+import { formatDate, getCategoryLabel } from "@/lib/utils";
 
-const sampleEvents = [
-    {
-        id: 1,
-        title: "Turniej Piłki Nożnej",
-        category: "Sport",
-        date: "2024-02-15",
-        description:
-            "Przyjdź i weź udział w turnieju piłki nożnej dla wszystkich poziomów zaawansowania. Czekają nagrody!",
-        image: "/api/placeholder/400/200",
-        categoryIcon: "⚽",
-    },
-    {
-        id: 2,
-        title: "Wieczór Filmowy",
-        category: "Movies",
-        date: "2026-02-18",
-        description:
-            "Oglądanie najlepszych filmów roku w towarzystwie innych kinomaniaków. Popcorn zapewniony!",
-        image: "/api/placeholder/400/200",
-        categoryIcon: "🎬",
-    },
-    {
-        id: 3,
-        title: "Spotkanie Fotografów",
-        category: "Hobby",
-        date: "2024-02-20",
-        description:
-            "Warsztaty fotograficzne i wymiana doświadczeń między miłośnikami fotografii.",
-        image: "/api/placeholder/400/200",
-        categoryIcon: "🎨",
-    },
-    {
-        id: 4,
-        title: "Koncert Jazzowy",
-        category: "Music",
-        date: "2024-02-22",
-        description:
-            "Wieczór pełen najlepszego jazzu w wykonaniu lokalnych artystów.",
-        image: "/api/placeholder/400/200",
-        categoryIcon: "🎵",
-    },
-    {
-        id: 5,
-        title: "Piknik w Parku",
-        category: "Social",
-        date: "2024-02-25",
-        description:
-            "Wspólny piknik w parku miejskim. Przynieś koc i dobre humory!",
-        image: "/api/placeholder/400/200",
-        categoryIcon: "🎉",
-    },
-];
+const categoryIcons: Record<EventCategory, string> = {
+    SPORTS: "⚽",
+    FILM_CLUB: "🎬",
+    HOBBY_GROUP: "🎨",
+    STUDY_CIRCLE: "📚",
+    SOCIAL: "🎉",
+    OTHER: "🌟"
+};
 
 export default function DashboardPage() {
+    const [events, setEvents] = useState<EventDTO[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<string>("all");
+    const [isLoading, setIsLoading] = useState(true);
     const [message, setMessage] = useState<{
         type: "success" | "error";
         text: string;
     } | null>(null);
-    const categories = ["all", "Sport", "Movies", "Hobby", "Music", "Social"]; //kategorie na sztywno (póki co)
 
-    useEffect(() => {}, []);
+    const categories: Array<EventCategory | "all"> = [
+        "all",
+        "SPORTS",
+        "FILM_CLUB",
+        "HOBBY_GROUP",
+        "STUDY_CIRCLE",
+        "SOCIAL",
+        "OTHER"
+    ];
+
+    useEffect(() => {
+        loadEvents();
+    }, []);
+
+    const loadEvents = async () => {
+        setIsLoading(true);
+        try {
+            const data = await eventsApiClient.getUpcoming();
+            setEvents(data);
+        } catch (error) {
+            if (error instanceof ApiError) {
+                setMessage({
+                    type: "error",
+                    text: "Błąd podczas ładowania wydarzeń",
+                });
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const filteredEvents =
         selectedCategory === "all"
-            ? sampleEvents
-            : sampleEvents.filter(
-                  (event) => event.category === selectedCategory
-              );
-
-    const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString("pl-PL", {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-        });
-    };
+            ? events
+            : events.filter((event) => event.category === selectedCategory);
 
     const handleLogout = async () => {
         await logout();
-        console.log("Logging out...");
         window.location.href = "/";
     };
 
-    const isEventPast = (eventDate: string) => {
-        const today = new Date();
-        const event = new Date(eventDate);
-        today.setHours(0, 0, 0, 0);
-        event.setHours(0, 0, 0, 0);
-        return event < today;
+    const isEventFull = (event: EventDTO) => {
+        return event.currentCapacity >= event.maxCapacity;
     };
 
-    const handleJoinEvent = (eventTitle: string) => {
-        setMessage({
-            type: "success",
-            text: `Pomyślnie dołączono do wydarzenia: ${eventTitle}`,
-        });
-        setTimeout(() => setMessage(null), 3000);
+    const handleJoinEvent = async (eventId: number, eventTitle: string) => {
+        try {
+            await eventAttendeesApiClient.join(eventId);
+            setMessage({
+                type: "success",
+                text: `Pomyślnie dołączono do wydarzenia: ${eventTitle}`,
+            });
+            // Reload events to update capacity
+            loadEvents();
+            setTimeout(() => setMessage(null), 3000);
+        } catch (error) {
+            if (error instanceof ApiError) {
+                setMessage({
+                    type: "error",
+                    text: error.details as string || "Błąd podczas dołączania do wydarzenia",
+                });
+            }
+        }
     };
 
     return (
@@ -176,80 +158,96 @@ export default function DashboardPage() {
                             } transition-colors`}
                             onClick={() => setSelectedCategory(category)}
                         >
-                            {category === "all" ? "Wszystkie" : category}
+                            {category === "all" ? "Wszystkie" : getCategoryLabel(category)}
                         </Button>
                     ))}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredEvents.map((event) => (
-                        <Card
-                            key={event.id}
-                            className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-200"
-                        >
-                            <div className="relative h-48 bg-gray-200">
-                                <div className="absolute inset-0 flex items-center justify-center text-gray-400">
-                                    <span className="text-6xl">
-                                        {event.categoryIcon}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <CardHeader className="pb-3">
-                                <div className="flex justify-between items-start mb-2">
-                                    <CardTitle className="text-xl text-primary line-clamp-2">
-                                        {event.title}
-                                    </CardTitle>
-                                    <span className="text-xs bg-accent/20 text-accent px-2 py-1 rounded-full whitespace-nowrap ml-2">
-                                        {event.category}
-                                    </span>
-                                </div>
-                                <CardDescription className="text-sm text-gray-500">
-                                    📅 {formatDate(event.date)}
-                                </CardDescription>
-                            </CardHeader>
-
-                            <CardContent className="pt-0">
-                                <p className="text-sm text-gray-600 mb-4 line-clamp-3">
-                                    {event.description}
-                                </p>
-
-                                <div className="flex gap-2">
-                                    {isEventPast(event.date) ? (
-                                        <Button
-                                            disabled
-                                            className="flex-1 bg-gray-400 text-gray-600 cursor-not-allowed"
-                                            size="sm"
-                                        >
-                                            Zakończone
-                                        </Button>
+                {isLoading ? (
+                    <div className="text-center py-12">
+                        <p className="text-gray-500 text-lg">Ładowanie wydarzeń...</p>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {filteredEvents.map((event) => (
+                            <Card
+                                key={event.id}
+                                className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-200"
+                            >
+                                <div className="relative h-48 bg-gray-200">
+                                    {event.imageUrl ? (
+                                        <img
+                                            src={event.imageUrl}
+                                            alt={event.title}
+                                            className="w-full h-full object-cover"
+                                        />
                                     ) : (
-                                        <Button
-                                            onClick={() =>
-                                                handleJoinEvent(event.title)
-                                            }
-                                            className="flex-1 bg-secondary hover:bg-secondary/90 text-white"
-                                            size="sm"
-                                        >
-                                            Dołącz
-                                        </Button>
+                                        <div className="absolute inset-0 flex items-center justify-center text-gray-400">
+                                            <span className="text-6xl">
+                                                {categoryIcons[event.category]}
+                                            </span>
+                                        </div>
                                     )}
-                                    <Link href={`/event/${event.id}`}>
-                                        <Button
-                                            variant="outline"
-                                            className="border-primary text-primary hover:bg-primary hover:text-white"
-                                            size="sm"
-                                        >
-                                            Szczegóły
-                                        </Button>
-                                    </Link>
                                 </div>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
 
-                {filteredEvents.length === 0 && (
+                                <CardHeader className="pb-3">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <CardTitle className="text-xl text-primary line-clamp-2">
+                                            {event.title}
+                                        </CardTitle>
+                                        <span className="text-xs bg-accent/20 text-accent px-2 py-1 rounded-full whitespace-nowrap ml-2">
+                                            {getCategoryLabel(event.category)}
+                                        </span>
+                                    </div>
+                                    <CardDescription className="text-sm text-gray-500">
+                                        📅 {formatDate(event.dateEvent)}
+                                        <br />
+                                        👥 {event.currentCapacity}/{event.maxCapacity} uczestników
+                                    </CardDescription>
+                                </CardHeader>
+
+                                <CardContent className="pt-0">
+                                    <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                                        {event.description}
+                                    </p>
+
+                                    <div className="flex gap-2">
+                                        {isEventFull(event) ? (
+                                            <Button
+                                                disabled
+                                                className="flex-1 bg-gray-400 text-gray-600 cursor-not-allowed"
+                                                size="sm"
+                                            >
+                                                Brak miejsc
+                                            </Button>
+                                        ) : (
+                                            <Button
+                                                onClick={() =>
+                                                    handleJoinEvent(event.id, event.title)
+                                                }
+                                                className="flex-1 bg-secondary hover:bg-secondary/90 text-white"
+                                                size="sm"
+                                            >
+                                                Dołącz
+                                            </Button>
+                                        )}
+                                        <Link href={`/event/${event.id}`}>
+                                            <Button
+                                                variant="outline"
+                                                className="border-primary text-primary hover:bg-primary hover:text-white"
+                                                size="sm"
+                                            >
+                                                Szczegóły
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                )}
+
+                {!isLoading && filteredEvents.length === 0 && (
                     <div className="text-center py-12">
                         <p className="text-gray-500 text-lg">
                             Brak wydarzeń w wybranej kategorii

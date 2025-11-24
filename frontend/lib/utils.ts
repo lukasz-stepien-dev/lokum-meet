@@ -15,18 +15,8 @@ export const sanitizeInput = (input: string): string => {
         .trim();
 };
 
-export const escapeHtml = (text: string): string => {
-    const div = document.createElement("div");
-    div.textContent = text;
-    return div.innerHTML;
-};
-
 export const validateEmail = (email: string): boolean => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-};
-
-export const validatePhone = (phone: string): boolean => {
-    return /^[\+]?[\d\s\-\(\)]{9,15}$/.test(phone);
 };
 
 export const validateUrl = (url: string): boolean => {
@@ -37,3 +27,54 @@ export const validateUrl = (url: string): boolean => {
         return false;
     }
 };
+
+export const formatDate = (date: string | Date): string => {
+    const d = typeof date === 'string' ? new Date(date) : date;
+    return d.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+};
+
+export const formatTime = (date: string | Date): string => {
+    const d = typeof date === 'string' ? new Date(date) : date;
+    return d.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+};
+
+export const formatDateTime = (date: string | Date): string => {
+    return `${formatDate(date)} at ${formatTime(date)}`;
+};
+
+export const getCategoryLabel = (category: string): string => {
+    const labels: Record<string, string> = {
+        FILM_CLUB: 'Film Club',
+        HOBBY_GROUP: 'Hobby Group',
+        SPORTS: 'Sports',
+        STUDY_CIRCLE: 'Study Circle',
+        SOCIAL: 'Social',
+        OTHER: 'Other',
+        SCHOOL: 'School',
+        UNIVERSITY: 'University',
+        NGO: 'NGO',
+        SPORTS_CLUB: 'Sports Club',
+        CULTURAL_CENTER: 'Cultural Center',
+        LIBRARY: 'Library'
+    };
+    return labels[category] || category;
+};
+
+export const getInitials = (name: string): string => {
+    return name
+        .split(' ')
+        .map(word => word[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2);
+};
+
+
+
