@@ -21,12 +21,12 @@ services:
 
   backend:
     build:
-      context: .
+      context: backend
       dockerfile: Dockerfile
     container_name: community-events-backend
     depends_on:
       postgres:
-        condition: service_health
+        condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: community-events
       SPRING_PROFILES_ACTIVE: docker
