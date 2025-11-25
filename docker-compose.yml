@@ -19,53 +19,14 @@ services:
     networks:
       - community-events-network
 
-  minio:
-    image: quay.io/minio/minio:latest
-    container_name: community-events-minio
-    command: server /data --console-address ":9001"
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-    environment:
-      MINIO_ROOT_USER: minio
-      MINIO_ROOT_PASSWORD: minio123
-    volumes:
-      - minio_data:/data
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 10s
-      timeout: 20s
-      retries: 3
-    networks:
-      - community-events-network
-
-  minio-client:
-    image: minio/mc:latest
-    container_name: community-events-mc
-    depends_on:
-      minio:
-        condition: service_healthy
-    entrypoint: >
-      /bin/sh -c "
-      mc alias set local http://minio:9000 minio minio123;
-      mc mb local/event-images --ignore-existing;
-      mc mb local/user-avatars --ignore-existing;
-      mc mb local/community-banners --ignore-existing;
-      echo 'MinIO buckets created successfully';
-      "
-    networks:
-      - community-events-network
-
   # Backend dla produkcji
   backend:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
     container_name: community-events-backend
     depends_on:
       postgres:
-        condition: service_healthy
-      minio:
         condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: community-events
@@ -74,9 +35,6 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres123
       JWT_SECRET: your-super-secret-key-minimum-32-characters-long-for-jwt
-      MINIO_URL: http://minio:9000
-      MINIO_ACCESS_KEY: minio
-      MINIO_SECRET_KEY: minio123
     ports:
       - "8080:8080"
     networks:
