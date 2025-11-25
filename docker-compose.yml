@@ -51,7 +51,6 @@ services:
       - backend
     environment:
       VITE_API_BASE_URL: http://localhost:8080
-      VITE_MINIO_URL: http://localhost:9000
     ports:
       - "3000:3000"
     networks:
@@ -66,7 +65,6 @@ services:
     container_name: community-events-frontend-dev
     environment:
       VITE_API_BASE_URL: http://localhost:8080
-      VITE_MINIO_URL: http://localhost:9000
     ports:
       - "3000:3000"
     volumes:
@@ -80,7 +78,6 @@ services:
 
 volumes:
   postgres_data:
-  minio_data:
 
 networks:
   community-events-network:
