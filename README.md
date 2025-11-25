@@ -1,7 +1,7 @@
-# lokum-meet
-Oto profesjonalny plik `README.md` przygotowany specjalnie pod Twoją specyficzną procedurę uruchamiania. Możesz go zapisać w głównym folderze projektu.
-
+# Lokum Meet
+[Screencast from 2025-11-25 12-54-43.webm](https://github.com/user-attachments/assets/2ef2214e-75c9-4d01-babb-ef77c274a177)
 ## 📋 Wymagania
+
 
 Przed uruchomieniem upewnij się, że masz zainstalowane:
 - [Docker](https://www.docker.com/get-started)
