@@ -49,7 +49,7 @@ Po poprawnym uruchomieniu, serwisy będą dostępne pod następującymi adresami
 | Serwis | Adres URL | Opis |
 | :--- | :--- | :--- |
 | **Frontend** | [http://localhost:3000](http://localhost:3000) | Interfejs użytkownika (Next.js) |
-| **Backend API** | [http://localhost:8080](http://localhost:8080) | Swagger UI / API (Spring Boot) |
+| **Backend API** | [http://localhost:8080](http://localhost:8080) | API (Spring Boot) |
 | **Baza Danych** | `localhost:5432` | PostgreSQL |
 
 ## 🛠️ Przydatne komendy
