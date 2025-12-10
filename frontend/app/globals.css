@@ -2,10 +2,10 @@
 
 @layer base {
     :root {
-        --primary: #3646c8;
-        --alt-primary: #4e5cd4;
+        --primary: #121A8F;
+        --alt-primary: #949BF7;
         --secondary: #29e373;
-        --accent: #949bf7;
+        --accent: #949BF7;
         --background: #ecedfe;
 
         --radius: 0.625rem;
@@ -23,6 +23,8 @@
         --border: rgb(228, 228, 231);
         --input: rgb(228, 228, 231);
         --ring: rgb(159, 159, 169);
+
+        --font: "Chivo", sans-serif;
     }
 
     * {
@@ -33,6 +35,7 @@
         background-color: var(--background);
         color: hsl(var(--foreground));
         font-feature-settings: "rlig" 1, "calt" 1;
+        font-family: var(--font), sans-serif;
     }
 }
 
