@@ -10,19 +10,20 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Climate_Crisis } from "next/font/google";
 
+
 const climateCrisis = Climate_Crisis({subsets: ['latin']});
 
 export default function Home() {
     return (
-        <div className="min-h-screen flex items-center justify-center p-4">
-            <Card className="w-full max-w-md shadow-xl border-0 bg-white/90 backdrop-blur-sm">
-                <CardHeader className="text-center pb-6">
-                    <CardTitle className={"text-4xl font-bold text-primary mb-2 " + climateCrisis.className}>
-                        Lokum Meet
-                    </CardTitle>
-                    <CardDescription className="text-lg text-gray-600">
+        <div className="min-h-screen flex-col flex items-center justify-center">
+            <h1 className={climateCrisis.className + " text-6xl font-extrabold mb-8 text-primary"}>
+                Lokum Meet
+            </h1>
+            <Card className="w-full max-w-md shadow-xl bg-white/90 backdrop-blur-sm">
+                <CardHeader className="text-center">
+                    <CardHeader>
                         Witaj! Wybierz opcję aby kontynuować
-                    </CardDescription>
+                    </CardHeader>
                 </CardHeader>
                 <CardContent className="space-y-6 px-6 pb-3">
                     <Link href="/login" className="w-full">

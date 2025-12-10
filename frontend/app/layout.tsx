@@ -18,7 +18,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body 
-                className={`${chivo.className}s bg-background min-h-screen antialiased`}
+                className={`${chivo.className} min-h-screen antialiased`}
                 suppressHydrationWarning={true}
             >
                 <SessionProvider>
