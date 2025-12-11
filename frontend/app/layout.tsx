@@ -1,30 +1,39 @@
 import type { Metadata } from "next";
 import { Chivo, Chivo_Mono } from "next/font/google";
 import "./globals.css";
-import SessionProvider from "@/components/SessionProvider";
+import Layout from "@/components/Layout";
 
-const chivo = Chivo({subsets: ["latin"]});
+const chivoSans = Chivo({
+  variable: "--font-chivo",
+    display: "swap",
+  subsets: ["latin"],
+});
+
+const chivoMono = Chivo_Mono({
+  variable: "--font-chivo-mono",
+    display: "swap",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
-    title: "Lokum Meet",
-    description: "An event app",
+  title: "Lokum Meet",
+  description: "Best social app",
 };
 
 export default function RootLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <html lang="en">
-            <body 
-                className={`${chivo.className} min-h-screen antialiased`}
-                suppressHydrationWarning={true}
-            >
-                <SessionProvider>
-                    {children}
-                </SessionProvider>
-            </body>
-        </html>
-    );
+  return (
+    <html lang="en">
+      <body
+        className={`${chivoSans.className} ${chivoMono.variable} antialiased`}
+      >
+        <Layout>
+            {children}
+        </Layout>
+      </body>
+    </html>
+  );
 }
