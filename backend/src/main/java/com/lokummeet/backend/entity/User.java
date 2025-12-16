@@ -60,7 +60,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "institution_id")
     )
-    private Set<Institution> institutions = new HashSet<>();
+    private Set<Institution> institutions;
 
     @Column(name = "created_at")
     @CreatedDate
@@ -69,16 +69,5 @@ public class User {
     @Column(name = "updated_at")
     @LastModifiedDate
     private OffsetDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = OffsetDateTime.now();
-        updatedAt = OffsetDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = OffsetDateTime.now();
-    }
 }
 

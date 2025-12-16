@@ -16,8 +16,6 @@ public class CorsConfig {
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:3000");
         config.addAllowedOrigin("http://frontend:3000");
-        config.addAllowedOrigin("http://lokum-meet.dying-zarah.internal:3000");
-        config.addAllowedOrigin("https://lokum-meet.dying-zarah.internal:3000");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
