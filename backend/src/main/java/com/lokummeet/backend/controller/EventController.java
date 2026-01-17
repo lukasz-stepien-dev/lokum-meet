@@ -1,6 +1,8 @@
 package com.lokummeet.backend.controller;
 
+import com.lokummeet.backend.dto.EventCardDTO;
 import com.lokummeet.backend.repository.EventRepository;
+import com.lokummeet.backend.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +18,13 @@ import java.util.List;
 @RequestMapping("/events")
 public class EventController {
     private final EventRepository eventRepository;
+    private final EventService eventService;
 
     @GetMapping("/latest")
-    public Object getLatestEvents() {
-        return eventRepository.findByDateEventAfter(LocalDate.now(), Sort.by(Sort.Direction.DESC, "dateEvent"));
+    public List<EventCardDTO> getLatestEvents() {
+        return eventRepository.findByDateEventAfter(LocalDate.now(), Sort.by(Sort.Direction.ASC, "dateEvent"))
+                .stream()
+                .map(eventService::getEventCardDTO)
+                .toList();
     }
 }

@@ -6,9 +6,9 @@ import {Button} from "@/components/ui/button";
 
 interface Item {
     image: string;
-    name: string;
+    title: string;
     description: string;
-    date: string;
+    startTime: string;
 }
 
 interface DashboardCarouselProps {
@@ -38,8 +38,8 @@ export default function DashboardCarousel({children, items}: DashboardCarouselPr
                                     />
                                 </ItemHeader>
                                 <ItemContent className={"w-full"}>
-                                    <ItemTitle className={"text-primary pl-1 text-xl"}>{item.date}</ItemTitle>
-                                    <ItemTitle className={"text-2xl truncate pl-1"}>{item.name}</ItemTitle>
+                                    <ItemTitle className={"text-primary pl-1 text-xl"}>{item.startTime}</ItemTitle>
+                                    <ItemTitle className={"text-2xl truncate pl-1"}>{item.title}</ItemTitle>
                                     <ItemDescription className={"pl-1"}>{item.description}</ItemDescription>
                                     <ItemActions className={"mt-4"}>
                                         <Button variant={"outline"} className={"w-1/2"}>Zapisz się</Button>
