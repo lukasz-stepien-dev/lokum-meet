@@ -4,24 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fe1a6cf4-c80b-4493-9418-ff2d286ec3ee" name="Changes" comment="dashboard refactor">
-      <change afterPath="$PROJECT_DIR$/../backend/notes" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/dto/EventCardDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/mapper/BaseMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/mapper/EventCardMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/service/EventService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../backend/src/main/resources/data.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hooks/useEventLatest.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/fetcher.ts" afterDir="false" />
+    <list default="true" id="fe1a6cf4-c80b-4493-9418-ff2d286ec3ee" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/ApiException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/entity/ConnectedAccount.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/repository/ConnectedAccountRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../backend/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/auth/[...nextauth]/route.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/login/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/provider.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auth.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/sign-in.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/proxy.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/config/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/controller/EventController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/controller/EventController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/entity/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/entity/Event.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ui/dashboardCarousel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ui/dashboardCarousel.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/resources/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/resources/data.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hooks/useEventLatest.ts" beforeDir="false" afterPath="$PROJECT_DIR$/hooks/useEventLatest.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../init-db.sql" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,9 +36,15 @@
   <component name="ComposerSettings">
     <execution />
   </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_/home/uqi/1 - Projects/lokum-meet/frontend" value="35qJo1PQAAJAd9Er2RZMfOlQVDv" />
+    </persistenceIdMap>
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
       </list>
     </option>
@@ -46,6 +57,7 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="PhpDebugGeneral" listening_started="true" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -54,27 +66,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "git-widget-placeholder": "small-refactor",
-    "js.debugger.nextJs.config.created.client": "true",
-    "js.debugger.nextJs.config.created.server": "true",
-    "last_opened_file_path": "/home/uqi/1 - Projects/lokum-meet/frontend",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_interpreter_path": "/home/uqi/.config/JetBrains/PhpStorm2025.2/node/versions/24.11.1/bin/node",
-    "nodejs_package_manager_path": "pnpm",
-    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
-    "ts.external.directory.path": "/home/uqi/1 - Projects/lokum-meet/frontend/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
+    &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/uqi/1 - Projects/lokum-meet/frontend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;/home/uqi/.config/JetBrains/PhpStorm2025.2/node/versions/24.11.1/bin/node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;pnpm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.prettier&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/uqi/1 - Projects/lokum-meet/frontend/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
+    ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app" />
@@ -99,8 +116,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-PS-253.29346.151" />
-        <option value="bundled-php-predefined-a98d8de5180a-0e0d91225499-com.jetbrains.php.sharedIndexes-PS-253.29346.151" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-PS-253.30387.85" />
+        <option value="bundled-php-predefined-a98d8de5180a-0e0d91225499-com.jetbrains.php.sharedIndexes-PS-253.30387.85" />
       </set>
     </attachedChunks>
   </component>
@@ -124,6 +141,11 @@
       <workItem from="1766762120727" duration="777000" />
       <workItem from="1767645624697" duration="51000" />
       <workItem from="1768312584011" duration="3129000" />
+      <workItem from="1768804035523" duration="6428000" />
+      <workItem from="1768912902244" duration="4208000" />
+      <workItem from="1769066211037" duration="1415000" />
+      <workItem from="1769408168795" duration="2813000" />
+      <workItem from="1769508347785" duration="5760000" />
     </task>
     <task id="LOCAL-00001" summary="edit next config">
       <option name="closed" value="true" />

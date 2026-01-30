@@ -1,19 +1,19 @@
 package com.lokummeet.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Table(name = "users")
 @Entity
@@ -21,7 +21,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-
+@Getter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +29,7 @@ public class User {
     private Long id;
 
     @Column()
+    @Setter
     private String username;
 
     @Column(nullable = false, unique = true)
@@ -65,6 +66,9 @@ public class User {
     )
     private Set<Institution> institutions;
 
+    @Setter
+    private boolean banned = false;
+
     @Column(name = "created_at")
     @CreatedDate
     private OffsetDateTime createdAt;
@@ -72,5 +76,29 @@ public class User {
     @Column(name = "updated_at")
     @LastModifiedDate
     private OffsetDateTime updatedAt;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<ConnectedAccount> connectedAccounts = new ArrayList<>();
+
+    public String getUsername() {
+        return StringUtils.isNotBlank(username) ? username : email;
+    }
+
+    public static User fromOidc(DefaultOidcUser googleUser) {
+        final User user = new User();
+        user.username = googleUser.getName();
+        user.email = googleUser.getEmail();
+        user.avatarUrl = googleUser.getPicture();
+        user.birthDate = LocalDate.parse(googleUser.getBirthdate());
+        user.age = LocalDate.now().getYear() - user.birthDate.getYear();
+        user.userRoles = Set.of(UserRoles.ROLE_USER);
+        user.bio = "Hi there! I'm new to LokumMeet.";
+        return user;
+    }
+
+    public void addConnectedAccount(ConnectedAccount connectedAccount) {
+        connectedAccounts.add(connectedAccount);
+    }
 }
 

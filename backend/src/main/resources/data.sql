@@ -24,27 +24,27 @@ ALTER SEQUENCE IF EXISTS events_id_seq RESTART WITH 1;
 -- ==========================================
 
 -- Admin user (password: admin123)
-INSERT INTO users (username, email, password_hash, birth_date, age, avatar_url, bio, is_verified, created_at, updated_at)
+INSERT INTO users (username, email, password_hash, birth_date, age, avatar_url, bio, is_verified, banned, created_at, updated_at)
 VALUES ('admin', 'admin@lokummeet.pl', '$2a$10$qpjZ8W3qw0JQKXQZ8W3qw0JQKXQZ8W3qw0JQKXQZ8W3qw0JQKXQZ8', '1990-01-01', 34,
-        'https://ui-avatars.com/api/?name=Admin&background=random', 'Administrator systemu', true, NOW(), NOW());
+        'https://ui-avatars.com/api/?name=Admin&background=random', 'Administrator systemu', true, false, NOW(), NOW());
 
 -- Regular users (password: password123)
-INSERT INTO users (username, email, password_hash, birth_date, age, avatar_url, bio, is_verified, created_at, updated_at)
+INSERT INTO users (username, email, password_hash, birth_date, age, avatar_url, bio, is_verified, banned, created_at, updated_at)
 VALUES
 ('anna_kowalska', 'anna.kowalska@example.com', '$2a$10$qpjZ8W3qw0JQKXQZ8W3qw0JQKXQZ8W3qw0JQKXQZ8W3qw0JQKXQZ8', '1998-05-15', 26,
- 'https://ui-avatars.com/api/?name=Anna+Kowalska&background=random', 'Miłośniczka filmów i dobrych książek. Szukam ludzi do wspólnych wyjazdów do kina!', true, NOW(), NOW()),
+ 'https://ui-avatars.com/api/?name=Anna+Kowalska&background=random', 'Miłośniczka filmów i dobrych książek. Szukam ludzi do wspólnych wyjazdów do kina!', true, false, NOW(), NOW()),
 
 ('jan_nowak', 'jan.nowak@example.com', '$2a$10$qpjZ8W3qw0JQKXQZ8W3qw0JQKXQZ8W3qw0JQKXQZ8W3qw0JQKXQZ8', '2000-03-22', 24,
- 'https://ui-avatars.com/api/?name=Jan+Nowak&background=random', 'Student informatyki, pasjonat nowych technologii i sportu.', true, NOW(), NOW()),
+ 'https://ui-avatars.com/api/?name=Jan+Nowak&background=random', 'Student informatyki, pasjonat nowych technologii i sportu.', true, false, NOW(), NOW()),
 
 ('maria_wisniewski', 'maria.wisniewski@example.com', '$2a$10$qpjZ8W3qw0JQKXQZ8W3qw0JQKXQZ8W3qw0JQKXQZ8W3qw0JQKXQZ8', '1995-11-08', 29,
- 'https://ui-avatars.com/api/?name=Maria+Wisniewski&background=random', 'Graficzka komputerowa. Uwielbianie robić zdjęcia i poznawać nowych ludzi.', true, NOW(), NOW()),
+ 'https://ui-avatars.com/api/?name=Maria+Wisniewski&background=random', 'Graficzka komputerowa. Uwielbianie robić zdjęcia i poznawać nowych ludzi.', true, false, NOW(), NOW()),
 
 ('piotr_lewandowski', 'piotr.lewandowski@example.com', '$2a$10$qpjZ8W3qw0JQKXQZ8W3qw0JQKXQZ8W3qw0JQKXQZ8W3qw0JQKXQZ8', '1992-07-30', 32,
- 'https://ui-avatars.com/api/?name=Piotr+Lewandowski&background=random', 'Trener personalny. Organizuję treningi w parku i wspólne wyjścia na rower.', true, NOW(), NOW()),
+ 'https://ui-avatars.com/api/?name=Piotr+Lewandowski&background=random', 'Trener personalny. Organizuję treningi w parku i wspólne wyjścia na rower.', true, false, NOW(), NOW()),
 
 ('kasia_dabrowska', 'kasia.dabrowska@example.com', '$2a$10$qpjZ8W3qw0JQKXQZ8W3qw0JQKXQZ8W3qw0JQKXQZ8W3qw0JQKXQZ8', '2001-09-12', 23,
- 'https://ui-avatars.com/api/?name=Kasia+Dabrowska&background=random', 'Studentka psychologii. Interesuję się jogą i medytacją.', true, NOW(), NOW());
+ 'https://ui-avatars.com/api/?name=Kasia+Dabrowska&background=random', 'Studentka psychologii. Interesuję się jogą i medytacją.', true, false, NOW(), NOW());
 
 -- ==========================================
 -- USER ROLES

@@ -1,0 +1,47 @@
+spring:
+    application:
+        name: backend
+
+    security:
+      oauth2:
+        resourceserver:
+          jwt:
+              issuer-uri: https://accounts.google.com
+              audiences: 1078225609692-6308agnnhmk0ellhmflj0qspkrhpnhmt.apps.googleusercontent.com
+
+    datasource:
+        url: jdbc:postgresql://localhost:5432/community_events_dev
+        username: postgres
+        password: postgres123
+        driver-class-name: org.postgresql.Driver
+
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+
+    main:
+        allow-bean-definition-overriding: true
+
+    devtools:
+        restart:
+            poll-interval: 2s
+            quiet-period: 1s
+        livereload:
+            enabled: true
+
+security:
+    jwt:
+        secret-key: c2VjdXJlLXNlY3JldC1rZXktZm9yLWxva3VtLW1lZXQtYXBwbGljYXRpb24tand0LXRva2VuLXNpZ25pbmc=
+
+google:
+    client:
+        id: 1078225609692-6308agnnhmk0ellhmflj0qspkrhpnhmt.apps.googleusercontent.com
+        secret: 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
+
+next:
+    public:
+        url: http://localhost:3000
+
+cookie:
+    domain: localhost
