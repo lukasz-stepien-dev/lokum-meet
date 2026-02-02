@@ -10,6 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface ConnectedAccountRepository extends CrudRepository<ConnectedAccount, Long> {
-    @Query("SELECT a FROM ConnectedAccount a WHERE a.provider = :provider AND a.subject = :subject")
-    Optional<ConnectedAccount> findByProviderAndSubject(@Param("Provider") String provider, @Param("Subject") String subject);
+    Optional<ConnectedAccount> findByProviderAndSubject(String provider, String subject);
 }

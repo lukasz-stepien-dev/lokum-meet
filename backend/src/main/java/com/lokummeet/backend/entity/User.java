@@ -90,12 +90,24 @@ public class User {
         user.username = googleUser.getName();
         user.email = googleUser.getEmail();
         user.avatarUrl = googleUser.getPicture();
-        user.birthDate = LocalDate.parse(googleUser.getBirthdate());
-        user.age = LocalDate.now().getYear() - user.birthDate.getYear();
-        user.userRoles = Set.of(UserRoles.ROLE_USER);
+        user.passwordHash = ""; // OAuth users don't have password
+        user.userRoles = new HashSet<>(Set.of(UserRoles.ROLE_USER)); // Use mutable HashSet
         user.bio = "Hi there! I'm new to LokumMeet.";
+        user.createdAt = OffsetDateTime.now();
+
+        // Birthdate is not provided by Google OAuth - set default or null
+        String birthdate = googleUser.getBirthdate();
+        if (birthdate != null) {
+            user.birthDate = LocalDate.parse(birthdate);
+            user.age = LocalDate.now().getYear() - user.birthDate.getYear();
+        } else {
+            user.birthDate = LocalDate.of(2000, 1, 1); // Default value
+            user.age = 0;
+        }
+
         return user;
     }
+
 
     public void addConnectedAccount(ConnectedAccount connectedAccount) {
         connectedAccounts.add(connectedAccount);

@@ -4,10 +4,23 @@ spring:
 
     security:
       oauth2:
-        resourceserver:
-          jwt:
-              issuer-uri: https://accounts.google.com
-              audiences: 1078225609692-6308agnnhmk0ellhmflj0qspkrhpnhmt.apps.googleusercontent.com
+          client:
+              registration:
+                    google:
+                        client-id: 1078225609692-6308agnnhmk0ellhmflj0qspkrhpnhmt.apps.googleusercontent.com
+                        client-secret: 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
+                        redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+                        scope:
+                            - openid
+                            - profile
+                            - email
+              provider:
+                    google:
+                        issuer-uri: https://accounts.google.com
+          resourceserver:
+              jwt:
+                  issuer-uri: https://accounts.google.com
+                  audiences: 1078225609692-6308agnnhmk0ellhmflj0qspkrhpnhmt.apps.googleusercontent.com
 
     datasource:
         url: jdbc:postgresql://localhost:5432/community_events_dev

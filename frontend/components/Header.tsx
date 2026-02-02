@@ -6,12 +6,17 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { auth } from "@/auth";
+import {verifySession} from "@/src/data-access-layer";
+import {isatty} from "node:tty";
+import Link from "next/link";
 
 const climate: NextFont = Climate_Crisis({
   subsets: ["latin"],
 });
 
 export default async function Header() {
+  const isAuth = await verifySession();
+
   const session = await auth();
   const idToken = session?.idToken;
   return (
@@ -25,10 +30,20 @@ export default async function Header() {
           Lokum Meet
         </h1>
         <Input className={"mr-4 w-1/3"} />
-        <Avatar className={"ml-auto mr-4"}>
-          <AvatarImage />
-          <AvatarFallback>AB</AvatarFallback>
-        </Avatar>
+        {!isAuth &&
+          <Link href={`${process.env.NEXT_PUBLIC_API_URL}/oauth2/authorization/google`}>
+            <Button variant={"outline"}>
+              Login with Google
+            </Button>
+          </Link>
+        }
+        { isAuth &&
+            <Avatar className={"ml-auto mr-4"}>
+              <AvatarImage />
+              <AvatarFallback>AB</AvatarFallback>
+            </Avatar>
+        }
+
         <Button className={"mr-4"}>
           <Plus /> Stwórz
         </Button>
