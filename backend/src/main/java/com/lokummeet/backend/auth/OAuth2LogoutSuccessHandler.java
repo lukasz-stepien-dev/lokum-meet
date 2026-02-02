@@ -16,23 +16,18 @@ import java.io.IOException;
 @Component
 public class OAuth2LogoutSuccessHandler implements LogoutSuccessHandler {
 
-    @Value("${COOKIE_DOMAIN:localhost:3000}")
-    private String cookieDomain;
-
     @Override
     public void onLogoutSuccess(HttpServletRequest request,
                                 HttpServletResponse response,
                                 Authentication authentication)
             throws IOException, ServletException {
         final Cookie sessionCookie = new Cookie("JSESSIONID", null);
-        sessionCookie.setDomain(cookieDomain);
         sessionCookie.setMaxAge(0);
         sessionCookie.setPath("/");
         sessionCookie.setHttpOnly(true);
         sessionCookie.setSecure(true);
 
         final Cookie csrfCookie = new Cookie("XSRF-TOKEN", null);
-        csrfCookie.setDomain(cookieDomain);
         csrfCookie.setMaxAge(0);
         csrfCookie.setPath("/");
         csrfCookie.setHttpOnly(true);

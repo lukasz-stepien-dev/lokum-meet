@@ -47,7 +47,7 @@
         --primary: #121A8F;
         --alt-primary: #949BF7;
         --secondary: #29e373;
-        --accent: #c8cbff;
+        --accent: oklch(0.97 0 0);
         --background: #ffffff;
 
         --radius: 0.625rem;
