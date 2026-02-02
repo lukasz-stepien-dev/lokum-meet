@@ -3,7 +3,7 @@ import {cookies} from "next/headers";
 import {User} from "@/src/types/User";
 
 
-async function getUser(): Promise<User | null> {
+export async function getUser(): Promise<User | null> {
     const cookieStore = await cookies();
     try {
         const authResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`, {

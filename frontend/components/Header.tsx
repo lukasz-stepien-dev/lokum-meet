@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import {verifySession} from "@/src/data-access-layer";
+import {getUser, verifySession} from "@/src/data-access-layer";
 import Link from "next/link";
 
 const climate: NextFont = Climate_Crisis({
@@ -14,6 +14,9 @@ const climate: NextFont = Climate_Crisis({
 
 export default async function Header() {
   const isAuth = await verifySession();
+  const user = await getUser();
+  const avatarUrl = user?.avatarUrl || "";
+  const avatarFallback = user?.username ? user.username.substring(0, 2).toUpperCase() : "";
 
   return (
     <header
@@ -36,9 +39,10 @@ export default async function Header() {
         { isAuth &&
             <Avatar className={"ml-auto mr-4"}>
               <AvatarImage
+                  src={avatarUrl}
                 alt={"User Avatar"}
               />
-              <AvatarFallback></AvatarFallback>
+              <AvatarFallback>{avatarFallback}</AvatarFallback>
             </Avatar>
         }
 
