@@ -1,5 +1,6 @@
 package com.lokummeet.backend.controller;
 
+import com.lokummeet.backend.auth.SecurityUtil;
 import com.lokummeet.backend.entity.AuthRequest;
 import com.lokummeet.backend.entity.User;
 import com.lokummeet.backend.repository.UserRepository;
@@ -11,10 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,13 +21,14 @@ import java.util.Optional;
 import static com.fasterxml.jackson.databind.type.LogicalType.Map;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
+    private final SecurityUtil securityUtil;
 
     @PostMapping("/addNewUser")
     public ResponseEntity<Object> addNewUser(@RequestBody User user) {
@@ -61,5 +60,11 @@ public class UserController {
         map.put("bio", user.getBio());
 
         return map;
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<User> me() {
+        final User user = securityUtil.getManagedUser();
+        return ResponseEntity.ok(user);
     }
 }

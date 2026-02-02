@@ -4,7 +4,7 @@ import { fetcher } from "@/lib/fetcher";
 import useSWR from "swr";
 
 export default function useEventLatest() {
-    const { data, error, isLoading } = useSWR("http://localhost:8080/api/public/events/latest", fetcher);
+    const { data, error, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/public/events/latest`, fetcher);
 
     return {
         eventCard: data,

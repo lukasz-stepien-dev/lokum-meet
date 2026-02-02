@@ -2,8 +2,6 @@ import {NextRequest, NextResponse} from "next/server";
 import {verifySession} from "@/src/data-access-layer";
 import {cookies} from "next/headers";
 
-export { auth as proxy } from "@/auth"
-
 const publicRoutes = ["/public"]
 
 export default async function proxy(req: NextRequest) {

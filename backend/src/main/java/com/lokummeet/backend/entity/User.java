@@ -87,7 +87,7 @@ public class User {
 
     public static User fromOidc(DefaultOidcUser googleUser) {
         final User user = new User();
-        user.username = googleUser.getName();
+        user.username = googleUser.getFullName();
         user.email = googleUser.getEmail();
         user.avatarUrl = googleUser.getPicture();
         user.passwordHash = ""; // OAuth users don't have password
