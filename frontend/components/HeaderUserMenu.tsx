@@ -24,6 +24,7 @@ export default function HeaderUserMenu({ avatarUrl, username }: HeaderUserMenuPr
           method: "GET",
           credentials: "include"
       });
+      window.location.reload();
     router.push("/");
   }
 

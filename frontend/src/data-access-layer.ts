@@ -10,7 +10,8 @@ export async function getUser(): Promise<User | null> {
             method: "GET",
             headers: {
                 "Cookie": `JSESSIONID=${cookieStore.get("JSESSIONID")?.value}`
-            }
+            },
+            cache: "no-store",
         });
 
         if (!authResponse.ok) {

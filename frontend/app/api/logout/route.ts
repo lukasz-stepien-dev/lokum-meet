@@ -1,9 +1,5 @@
-"use server"
-
 import {cookies} from "next/headers";
-import {fetch} from "next/dist/compiled/@edge-runtime/primitives";
 import {NextResponse} from "next/server";
-import proxy from "@/proxy";
 
 export async function GET() {
     const cookieStore = await cookies()
@@ -18,5 +14,5 @@ export async function GET() {
     cookieStore.set("JSESSIONID", "", { maxAge: 0 })
     cookieStore.set("XSRF_TOKEN", "", { maxAge: 0 })
 
-    return NextResponse.redirect(process.env.NEXT_PUBLIC_API_URL ?? "");
+    return NextResponse.json({ success: true });
 }
