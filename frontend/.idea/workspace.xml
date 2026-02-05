@@ -5,10 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fe1a6cf4-c80b-4493-9418-ff2d286ec3ee" name="Changes" comment="DropDown menu for avatar but no working log out">
-      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/dto/EventDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/mapper/EventMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/resources/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/resources/data.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/event/[id]/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hooks/useEventId.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/enums/EventCategory.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/types/Event.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/dto/EventCardDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/dto/EventCardDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/mapper/EventCardMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/mapper/EventCardMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ui/dashboardCarousel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ui/dashboardCarousel.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hooks/useEventLatest.ts" beforeDir="false" afterPath="$PROJECT_DIR$/hooks/useEventLatest.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,8 +31,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -78,6 +83,7 @@
     "nodejs_interpreter_path": "/home/uqi/.nvm/versions/node/v24.12.0/bin/node",
     "nodejs_package_manager_path": "pnpm",
     "npm.Next.js: server-side.executor": "Run",
+    "prettierjs.PrettierConfiguration.Package": "/home/uqi/1 - Projects/lokum-meet/frontend/node_modules/prettier",
     "settings.editor.selected.configurable": "settings.javascript.runtime",
     "ts.external.directory.path": "/home/uqi/1 - Projects/lokum-meet/frontend/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
@@ -146,7 +152,7 @@
       <workItem from="1770040196622" duration="8061000" />
       <workItem from="1770062641335" duration="4653000" />
       <workItem from="1770140166613" duration="2294000" />
-      <workItem from="1770296590644" duration="1966000" />
+      <workItem from="1770296590644" duration="5735000" />
     </task>
     <task id="LOCAL-00001" summary="edit next config">
       <option name="closed" value="true" />
