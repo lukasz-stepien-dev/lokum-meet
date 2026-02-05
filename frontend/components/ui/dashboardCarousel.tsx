@@ -3,8 +3,10 @@ import {Carousel, CarouselContent, CarouselItem} from "@/components/ui/carousel"
 import {Item, ItemActions, ItemContent, ItemDescription, ItemHeader, ItemTitle} from "@/components/ui/item";
 import Image from "next/image";
 import {Button} from "@/components/ui/button";
+import Link from "next/link";
 
 interface Item {
+  id: number;
     image: string;
     title: string;
     description: string;
@@ -25,9 +27,9 @@ export default function DashboardCarousel({children, items}: DashboardCarouselPr
             className={"w-full"}
         >
             <CarouselContent className={"px-7"}>
-                    {items.map((item, index) => (
+                    {items.map((item) => (
                         <CarouselItem className={"sm:basis-3/4 md:basis-1/3 lg:basis-1/4 xl:basis-1/6"}>
-                            <Item key={index} variant={"outline"}>
+                            <Item key={item.id} variant={"outline"}>
                                 <ItemHeader>
                                     <Image
                                         src={item.image}
@@ -43,7 +45,9 @@ export default function DashboardCarousel({children, items}: DashboardCarouselPr
                                     <ItemDescription className={"pl-1"}>{item.description}</ItemDescription>
                                     <ItemActions className={"mt-4"}>
                                         <Button variant={"outline"} className={"w-1/2"}>Zapisz się</Button>
-                                        <Button variant={"link"} className={"w-1/2"}>Więcej</Button>
+                                        <Link className={"flex justify-center"} href={`/event/${item.id}`}>
+                                          <Button variant={"link"} className={"w-1/2"}>Więcej</Button>
+                                        </Link>
                                     </ItemActions>
                                 </ItemContent>
                             </Item>

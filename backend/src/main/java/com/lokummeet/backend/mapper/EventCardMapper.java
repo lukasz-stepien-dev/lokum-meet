@@ -8,4 +8,5 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface EventCardMapper extends BaseMapper<EventCardDTO, Event> {
     EventCardDTO toDto(Event entity);
+    Event toEntity(EventCardDTO dto);
 }
