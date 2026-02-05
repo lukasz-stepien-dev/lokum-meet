@@ -96,14 +96,14 @@ VALUES
 ('Wieczór z Klasycznym Kinem',
  'Projekcja kultowych filmów z lat 70. Dyskusja przy kawie po seansie.',
  'Klub Filmowy Muza, ul. Główna 15',
- '2025-12-15 18:00:00', '2025-12-15 22:00:00', '2025-12-15',
+ '2026-06-15 18:00:00', '2026-06-15 22:00:00', '2026-06-15',
  30, 0, 'FILM_CLUB', 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800',
  2, 1, 18, 99, NOW(), NOW()),
 
-('Kino na Dachu - Lato 2025',
+('Kino na Dachu - Lato 2026',
  'Letnie kino pod gwiazdami. Przegląd najlepszych polskich filmów.',
  'Klub Filmowy Muza, dach budynku',
- '2025-07-20 21:00:00', '2025-07-21 00:00:00', '2025-07-20',
+ '2026-07-20 21:00:00', '2026-07-21 00:00:00', '2026-07-20',
  50, 0, 'FILM_CLUB', 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800',
  2, 1, 16, 99, NOW(), NOW());
 
@@ -113,14 +113,14 @@ VALUES
 ('Poranny Jogging w Parku',
  'Wspólny bieg dla początkujących. Dystans ok. 5km, tempo spokojne.',
  'Park Miejski, wejście główne',
- '2025-12-10 07:00:00', '2025-12-10 08:30:00', '2025-12-10',
+ '2026-06-10 07:00:00', '2026-06-10 08:30:00', '2026-06-10',
  20, 0, 'SPORTS', 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=800',
  5, 2, 16, 60, NOW(), NOW()),
 
 ('Turniej Siatkówki Plażowej',
  'Letni turniej dla amatorów. Zgłoszenia drużynowe (4 osoby).',
  'Plaża Miejska, boisko nr 2',
- '2025-08-15 10:00:00', '2025-08-15 18:00:00', '2025-08-15',
+ '2026-08-15 10:00:00', '2026-08-15 18:00:00', '2026-08-15',
  40, 0, 'SPORTS', 'https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?w=800',
  5, 2, 18, 50, NOW(), NOW());
 
@@ -130,14 +130,14 @@ VALUES
 ('Warsztaty Fotograficzne',
  'Podstawy fotografii dla początkujących. Zabierz swój aparat!',
  'Dom Kultury Centrum, sala 3',
- '2025-12-12 16:00:00', '2025-12-12 19:00:00', '2025-12-12',
+ '2026-06-12 16:00:00', '2026-06-12 19:00:00', '2026-06-12',
  15, 0, 'HOBBY_GROUP', 'https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800',
  4, 3, 16, 99, NOW(), NOW()),
 
 ('Klub Książki - Spotkanie #12',
  'Omówimy "Mistrza i Małgorzatę" Bułhakowa. Dla fanów literatury rosyjskiej.',
  'Kawiarnia Literacka, ul. Bookowa 7',
- '2025-12-18 18:00:00', '2025-12-18 20:00:00', '2025-12-18',
+ '2026-06-18 18:00:00', '2026-06-18 20:00:00', '2026-06-18',
  12, 0, 'HOBBY_GROUP', 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800',
  2, NULL, 18, 99, NOW(), NOW());
 
@@ -147,7 +147,7 @@ VALUES
 ('Koło Programistyczne - Python',
  'Wspólna nauka programowania w Pythonie. Mile widziani początkujący!',
  'Centrum IT, sala konferencyjna',
- '2025-12-14 17:00:00', '2025-12-14 20:00:00', '2025-12-14',
+ '2026-06-14 17:00:00', '2026-06-14 20:00:00', '2026-06-14',
  25, 0, 'STUDY_CIRCLE', 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=800',
  3, NULL, 16, 99, NOW(), NOW());
 
@@ -157,7 +157,7 @@ VALUES
 ('Piknik Integracyjny',
  'Wspólne grillowanie i gry terenowe. Rodziny mile widziane!',
  'Park Miejski, polana przy jeziorze',
- '2025-12-25 12:00:00', '2025-12-25 18:00:00', '2025-12-25',
+ '2026-06-25 12:00:00', '2026-06-25 18:00:00', '2026-06-25',
  100, 0, 'SOCIAL', 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800',
  4, 3, 13, 99, NOW(), NOW());
 
