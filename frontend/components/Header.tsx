@@ -25,7 +25,7 @@ export default async function Header() {
         <Input className="mr-4 w-1/3" />
         {!isAuth && (
           <Link href={`${process.env.NEXT_PUBLIC_API_URL}/oauth2/authorization/google`}>
-            <Button variant="outline">Login with Google</Button>
+            <Button className={"mr-4"} variant="outline">Zaloguj się (Google)</Button>
           </Link>
         )}
         {isAuth && user && (
@@ -34,9 +34,11 @@ export default async function Header() {
             username={user.username || ""}
           />
         )}
-        <Button className="mr-4">
-          <Plus /> Stwórz
-        </Button>
+        {isAuth &&
+            <Button className="mr-4">
+              <Plus /> Stwórz
+            </Button>
+        }
       </div>
       <Separator />
     </header>

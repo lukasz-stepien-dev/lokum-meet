@@ -35,7 +35,6 @@ export const verifySession = async () => {
 
     if (cookieStore.has("JSESSIONID") && cookieStore.get("JSESSIONID")?.value != "") {
         const user = await getUser();
-        console.log("user", user);
         return user && user.id && !user.banned;
     }
 
