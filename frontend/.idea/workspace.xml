@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fe1a6cf4-c80b-4493-9418-ff2d286ec3ee" name="Changes" comment="DropDown menu for avatar but no working log out">
+    <list default="true" id="fe1a6cf4-c80b-4493-9418-ff2d286ec3ee" name="Changes" comment="#11 Go back and author ui">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/event/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/event/[id]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data-access-layer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/data-access-layer.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,6 +146,7 @@
       <workItem from="1770062641335" duration="4653000" />
       <workItem from="1770140166613" duration="2294000" />
       <workItem from="1770296590644" duration="5735000" />
+      <workItem from="1773241505432" duration="2060000" />
     </task>
     <task id="LOCAL-00001" summary="edit next config">
       <option name="closed" value="true" />
@@ -197,7 +196,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770067288429</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="#11 Go back and author ui">
+      <option name="closed" value="true" />
+      <created>1770545878466</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1770545878466</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -221,7 +228,8 @@
     <MESSAGE value="Hotfix oauth2" />
     <MESSAGE value="Added support for avatar url from google or fallback from name" />
     <MESSAGE value="DropDown menu for avatar but no working log out" />
-    <option name="LAST_COMMIT_MESSAGE" value="DropDown menu for avatar but no working log out" />
+    <MESSAGE value="#11 Go back and author ui" />
+    <option name="LAST_COMMIT_MESSAGE" value="#11 Go back and author ui" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

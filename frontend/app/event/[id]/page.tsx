@@ -25,17 +25,22 @@ export default function Page() {
         </Button>
         <h1 className={"text-4xl font-extrabold tracking-tight text-balance"}>{event?.title}</h1>
         <section className={"flex flex-row items-center my-5"}>
-          {
-            // #TODO: implement author name and avatar
-          }
           <Avatar>
             <AvatarImage
-              src={""}
+              src={event?.createdBy.avatarUrl}
               alt={"Author avatar"}
               />
-            <AvatarFallback>AB</AvatarFallback>
+            <AvatarFallback>
+              {
+                event?.createdBy.username.substring(0, 2).toUpperCase()
+              }
+            </AvatarFallback>
           </Avatar>
-          <p className={"leading-7 ml-3"}>Author name</p>
+          <p className={"leading-7 ml-3"}>
+            {
+              event?.createdBy.username
+            }
+          </p>
         </section>
       </section>
     </section>
