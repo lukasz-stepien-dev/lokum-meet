@@ -2,7 +2,7 @@ import {NextRequest, NextResponse} from "next/server";
 import {verifySession} from "@/src/data-access-layer";
 import {cookies} from "next/headers";
 
-const publicRoutes = ["/public"]
+const publicRoutes = ["/event"]
 
 export default async function proxy(req: NextRequest) {
     const path= req.nextUrl.pathname;
