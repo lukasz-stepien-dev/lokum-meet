@@ -44,14 +44,13 @@ export default function DashboardCarousel({children, items}: DashboardCarouselPr
                                 <ItemContent className={"w-full"}>
                                     <ItemTitle className={"text-primary pl-1 text-xl"}>
                                       {
-                                        format.dateTime(item.startTime, {
+                                        format.dateTime(new Date(item.startTime), {
                                           day: "2-digit",
                                           month: "long",
                                           year: "numeric",
                                           hour: "2-digit",
                                           minute: "2-digit",
                                           hour12: false,
-                                          timeZone: "Europe/Warsaw"
                                         })
                                       }
                                     </ItemTitle>
