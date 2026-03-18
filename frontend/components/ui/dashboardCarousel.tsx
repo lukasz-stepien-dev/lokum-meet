@@ -26,7 +26,7 @@ export default function DashboardCarousel({children, items}: DashboardCarouselPr
             opts={{
                 align: "start"
             }}
-            className={"w-full"}
+            className={"w-full select-none"}
         >
             <CarouselContent className={"px-7"}>
                     {items.map((item) => (
