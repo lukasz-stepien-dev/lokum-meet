@@ -23,6 +23,7 @@ export default function Page() {
           <ArrowUpLeft />
           Powrót
         </Button>
+
         <h1 className={"text-4xl font-extrabold tracking-tight text-balance"}>{event?.title}</h1>
         <section className={"flex flex-row items-center my-5"}>
           <Avatar>
@@ -42,6 +43,13 @@ export default function Page() {
             }
           </p>
         </section>
+
+
+        <p>
+          {
+            event?.description
+          }
+        </p>
       </section>
     </section>
   );

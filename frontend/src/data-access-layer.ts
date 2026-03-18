@@ -23,7 +23,14 @@ export async function getUser(): Promise<User | null> {
             return null;
         }
 
-        return JSON.parse(text);
+
+        try {
+            return JSON.parse(text);
+
+        } catch (e) {
+            return null;
+        }
+
     } catch (error) {
         console.error("Error fetching user:", error);
         return null;

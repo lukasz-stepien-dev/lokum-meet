@@ -1,5 +1,4 @@
 import { User } from "@/src/types/User";
-import { EventCategory } from "../enums/EventCategory";
 
 export interface Event {
   title: string;

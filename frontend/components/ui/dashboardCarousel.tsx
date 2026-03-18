@@ -4,13 +4,14 @@ import {Item, ItemActions, ItemContent, ItemDescription, ItemHeader, ItemTitle} 
 import Image from "next/image";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
+import { useFormatter } from "next-intl";
 
 interface Item {
   id: number;
     image: string;
     title: string;
     description: string;
-    startTime: string;
+    startTime: Date;
 }
 
 interface DashboardCarouselProps {
@@ -19,6 +20,7 @@ interface DashboardCarouselProps {
 }
 
 export default function DashboardCarousel({children, items}: DashboardCarouselProps) {
+    const format = useFormatter();
     return (
         <Carousel
             opts={{
@@ -40,7 +42,18 @@ export default function DashboardCarousel({children, items}: DashboardCarouselPr
                                     />
                                 </ItemHeader>
                                 <ItemContent className={"w-full"}>
-                                    <ItemTitle className={"text-primary pl-1 text-xl"}>{item.startTime}</ItemTitle>
+                                    <ItemTitle className={"text-primary pl-1 text-xl"}>
+                                      {
+                                        format.dateTime(new Date(item.startTime), {
+                                          day: "2-digit",
+                                          month: "long",
+                                          year: "numeric",
+                                          hour: "2-digit",
+                                          minute: "2-digit",
+                                          hour12: false,
+                                        })
+                                      }
+                                    </ItemTitle>
                                     <ItemTitle className={"text-2xl truncate pl-1"}>{item.title}</ItemTitle>
                                     <ItemDescription className={"pl-1"}>{item.description}</ItemDescription>
                                     <ItemActions className={"mt-4"}>
