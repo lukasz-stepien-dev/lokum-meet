@@ -1,0 +1,12 @@
+opencollection: 1.0.0
+info:
+  name: "Lokum Meet"
+  type: workspace
+
+collections:
+  - name: "Event"
+    path: "collections/Event"
+
+specs:
+
+docs: ''
