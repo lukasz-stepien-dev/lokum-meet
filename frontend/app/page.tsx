@@ -1,14 +1,15 @@
 "use client";
 
 import {Calendar, Hourglass} from "lucide-react";
-import DashboardCarousel from "@/components/ui/dashboardCarousel";
+import DashboardCarousel from "@/components/dashboardCarousel";
 import useEventLatest from "@/hooks/useEventLatest";
+import { Spinner } from "@/components/ui/spinner";
 
 
 
 export default function Home() {
     const { eventCard, isError, isLoading } = useEventLatest()
-    if (isLoading) return <div>Loading...</div>
+    if (isLoading) return <Spinner />
     if (isError) return <div>Error loading data</div>
   return (
   <main className="flex min-h-screen w-full flex-col">

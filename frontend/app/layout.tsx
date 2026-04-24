@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Chivo, Chivo_Mono } from "next/font/google";
 import "./globals.css";
-import Layout from "@/components/Layout";
 import { NextIntlClientProvider, useMessages } from "next-intl";
+import Header from "@/components/Header";
 
 const chivoSans = Chivo({
   variable: "--font-chivo",
@@ -34,7 +34,8 @@ export default function RootLayout({
         className={`${chivoSans.className} ${chivoMono.variable} antialiased`}
       >
         <NextIntlClientProvider>
-          <Layout>{children}</Layout>
+          <Header />
+          { children }
         </NextIntlClientProvider>
       </body>
     </html>
