@@ -1,12 +1,12 @@
 "use client"
 
-import { fetcher } from "@/lib/fetcher";
+import { publicFetcher } from "@/lib/publicFetcher";
 import useSWR from "swr";
 
 export default function useEventLatest() {
     const { data, error, isLoading } = useSWR(
       `${process.env.NEXT_PUBLIC_API_URL}/api/public/events/latest`,
-      fetcher
+      publicFetcher
     );
 
     return {
