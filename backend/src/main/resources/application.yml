@@ -55,6 +55,9 @@ google:
 next:
     public:
         url: http://localhost:3000
-
-cookie:
-    domain: localhost
+server:
+    servlet:
+        session:
+            cookie:
+                domain: localhost
+                same-site: lax

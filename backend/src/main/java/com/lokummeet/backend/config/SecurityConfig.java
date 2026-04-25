@@ -18,6 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
+import org.springframework.security.web.header.HeaderWriter;
+import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
 
 @Configuration
 @EnableWebSecurity
@@ -25,6 +28,9 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
+    private final HeaderWriterLogoutHandler clearSiteData = new HeaderWriterLogoutHandler(
+            new ClearSiteDataHeaderWriter(ClearSiteDataHeaderWriter.Directive.ALL)
+    );
 
     public SecurityConfig(JwtAuthFilter jwtAuthFilter,
                           UserDetailsService userDetailsService,
@@ -43,6 +49,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/public/**").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
                         .requestMatchers("/api/auth/logout").permitAll()
+                        .requestMatchers("/logout").permitAll()
                         .requestMatchers("/auth/addNewUser", "/auth/generateToken").permitAll()
                         .requestMatchers("/auth/user/**").hasAuthority("ROLE_USER")
                         .requestMatchers("/auth/admin/**").hasAuthority("ROLE_ADMIN")
@@ -52,7 +59,10 @@ public class SecurityConfig {
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(oAuth2LoginSuccessHandler))
                 .logout(logout -> logout
-                        .logoutUrl("/api/auth/logout")
+                        .permitAll()
+                        .addLogoutHandler(clearSiteData)
+                        .clearAuthentication(true)
+                        .invalidateHttpSession(true)
                         .logoutSuccessHandler(oAuth2LogoutSuccessHandler));
         return http.build();
     }
