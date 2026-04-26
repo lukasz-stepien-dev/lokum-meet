@@ -5,12 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fe1a6cf4-c80b-4493-9418-ff2d286ec3ee" name="Changes" comment="Resolve hydration problem">
-      <change afterPath="$PROJECT_DIR$/lib/authenticatedFetcher.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hooks/useIsEnroll.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/auth/AppAuthenticationToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/auth/AppAuthenticationToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/auth/OAuth2LoginSuccessHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/auth/OAuth2LoginSuccessHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/config/ConfigService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/config/ConfigService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/filter/JwtAuthFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/service/JwtService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/resources/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/provider.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hooks/useEventId.ts" beforeDir="false" afterPath="$PROJECT_DIR$/hooks/useEventId.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hooks/useEventLatest.ts" beforeDir="false" afterPath="$PROJECT_DIR$/hooks/useEventLatest.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/fetcher.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/publicFetcher.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/fetcher.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/fetcher.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proxy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/proxy.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data-access-layer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/data-access-layer.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +64,9 @@
   }
 }</component>
   <component name="PhpDebugGeneral" listening_started="true" />
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -70,7 +82,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
     &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;enroll-btn&quot;,
     &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
     &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
     &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
@@ -162,6 +174,8 @@
       <workItem from="1774530893417" duration="32000" />
       <workItem from="1774601899768" duration="23000" />
       <workItem from="1777040965294" duration="5286000" />
+      <workItem from="1777144821748" duration="4000" />
+      <workItem from="1777187793375" duration="5558000" />
     </task>
     <task id="LOCAL-00001" summary="edit next config">
       <option name="closed" value="true" />

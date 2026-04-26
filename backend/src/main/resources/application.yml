@@ -43,15 +43,6 @@ spring:
         livereload:
             enabled: true
 
-security:
-    jwt:
-        secret-key: c2VjdXJlLXNlY3JldC1rZXktZm9yLWxva3VtLW1lZXQtYXBwbGljYXRpb24tand0LXRva2VuLXNpZ25pbmc=
-
-google:
-    client:
-        id: 1078225609692-6308agnnhmk0ellhmflj0qspkrhpnhmt.apps.googleusercontent.com
-        secret: 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
-
 next:
     public:
         url: http://localhost:3000
@@ -59,5 +50,5 @@ server:
     servlet:
         session:
             cookie:
-                domain: localhost
                 same-site: lax
+                http-only: true

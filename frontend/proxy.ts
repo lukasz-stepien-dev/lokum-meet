@@ -1,10 +1,15 @@
 import {NextRequest, NextResponse} from "next/server";
-import {verifySession} from "@/src/data-access-layer";
+import { verifySession} from "@/src/data-access-layer";
 import {cookies} from "next/headers";
 import createMiddleware from "next-intl/middleware";
 import { routing } from "@/src/i18n/routing";
 
-const publicRoutes = ["/event"]
+const publicRoutes = [
+  "/event",
+  "/oauth2/authorization/google",
+  "/login/oauth2/code",
+  "/api/auth/me",
+];
 
 const intlMiddleware = createMiddleware(routing);
 

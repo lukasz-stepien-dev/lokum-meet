@@ -8,20 +8,22 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 
 import java.io.Serial;
 import java.util.Collection;
+import java.util.Collections;
 
 public class AppAuthenticationToken implements Authentication {
 
     @Serial
-    private static final Long serialVersionUID = 2641880265803745820L;
+    private static final long serialVersionUID = 2641880265803745820L;
 
     private final User user;
     private final boolean authenticated;
-    private Collection<GrantedAuthority> authorities;
+    private final Collection<? extends GrantedAuthority> authorities;
     private WebAuthenticationDetails details;
 
-    public AppAuthenticationToken(User user) {
+    public AppAuthenticationToken(User user, Collection<? extends GrantedAuthority> authorities) {
         this.user = user;
         this.authenticated = true;
+        this.authorities = (authorities != null) ? authorities : Collections.emptyList();
     }
 
     @Override

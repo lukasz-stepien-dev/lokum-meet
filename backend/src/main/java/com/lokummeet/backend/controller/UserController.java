@@ -4,7 +4,6 @@ import com.lokummeet.backend.auth.SecurityUtil;
 import com.lokummeet.backend.entity.AuthRequest;
 import com.lokummeet.backend.entity.User;
 import com.lokummeet.backend.repository.UserRepository;
-import com.lokummeet.backend.service.JwtService;
 import com.lokummeet.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +24,6 @@ import static com.fasterxml.jackson.databind.type.LogicalType.Map;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final SecurityUtil securityUtil;
@@ -33,18 +31,6 @@ public class UserController {
     @PostMapping("/addNewUser")
     public ResponseEntity<Object> addNewUser(@RequestBody User user) {
         return userService.addUser(user);
-    }
-
-    @PostMapping("/generateToken")
-    public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
-        );
-        if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(authRequest.getUsername());
-        } else {
-            throw new UsernameNotFoundException("Invalid user request!");
-        }
     }
 
     @PostMapping("/user/profile")

@@ -1,5 +1,4 @@
-export const fetcher = (...args: Parameters<typeof fetch>) =>
-  fetch(...args).then((res) => {
-      console.log("Fetcher response:", res);
-      return res.json()
-  });
+export const fetcher = (url: string | URL | Request) =>
+  fetch(url, {
+    credentials: "include",
+  }).then((res) => res.json());

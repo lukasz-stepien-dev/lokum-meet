@@ -1,8 +1,8 @@
 package com.lokummeet.backend.config;
 
+import com.lokummeet.backend.auth.OAuth2AuthenticationEntrypoint;
 import com.lokummeet.backend.auth.OAuth2LoginSuccessHandler;
 import com.lokummeet.backend.auth.OAuth2LogoutSuccessHandler;
-import com.lokummeet.backend.filter.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,30 +12,24 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
-import org.springframework.security.web.header.HeaderWriter;
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private final JwtAuthFilter jwtAuthFilter;
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final HeaderWriterLogoutHandler clearSiteData = new HeaderWriterLogoutHandler(
             new ClearSiteDataHeaderWriter(ClearSiteDataHeaderWriter.Directive.ALL)
     );
 
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter,
-                          UserDetailsService userDetailsService,
+    public SecurityConfig(UserDetailsService userDetailsService,
                           PasswordEncoder passwordEncoder) {
-        this.jwtAuthFilter = jwtAuthFilter;
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -50,10 +44,8 @@ public class SecurityConfig {
                         .requestMatchers("/oauth2/**").permitAll()
                         .requestMatchers("/api/auth/logout").permitAll()
                         .requestMatchers("/logout").permitAll()
-                        .requestMatchers("/auth/addNewUser", "/auth/generateToken").permitAll()
-                        .requestMatchers("/auth/user/**").hasAuthority("ROLE_USER")
-                        .requestMatchers("/auth/admin/**").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers("/auth/institutionAdmin/**").hasAuthority("ROLE_INSTITUTION_ADMIN")
+                        .requestMatchers("/api/auth/me").permitAll()
+                        .requestMatchers("/api/auth/**").hasAuthority("OIDC_USER")
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
@@ -63,7 +55,12 @@ public class SecurityConfig {
                         .addLogoutHandler(clearSiteData)
                         .clearAuthentication(true)
                         .invalidateHttpSession(true)
-                        .logoutSuccessHandler(oAuth2LogoutSuccessHandler));
+                        .logoutSuccessHandler(oAuth2LogoutSuccessHandler))
+                .exceptionHandling(exceptionHandlingConfigurer -> {
+                    exceptionHandlingConfigurer.authenticationEntryPoint(
+                            new OAuth2AuthenticationEntrypoint()
+                    );
+                });
         return http.build();
     }
 

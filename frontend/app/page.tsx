@@ -4,11 +4,14 @@ import {Calendar, Hourglass} from "lucide-react";
 import DashboardCarousel from "@/components/dashboardCarousel";
 import useEventLatest from "@/hooks/useEventLatest";
 import { Spinner } from "@/components/ui/spinner";
+import useIsEnroll from "@/hooks/useIsEnroll";
 
 
 
 export default function Home() {
-    const { eventCard, isError, isLoading } = useEventLatest()
+    const { isEnroll } = useIsEnroll(1);
+    console.log(isEnroll);
+    const { eventCard, isError, isLoading } = useEventLatest();
     if (isLoading) return <Spinner />
     if (isError) return <div>Error loading data</div>
   return (

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ConfigService {
 
-    @Value("${google.client.id}")
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String googleClientId;
 
     @Value("${next.public.url}")
