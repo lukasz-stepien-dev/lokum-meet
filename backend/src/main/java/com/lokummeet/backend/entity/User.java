@@ -35,9 +35,6 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password_hash", nullable = false)
-    private String passwordHash;
-
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
 
@@ -90,18 +87,16 @@ public class User {
         user.username = googleUser.getFullName();
         user.email = googleUser.getEmail();
         user.avatarUrl = googleUser.getPicture();
-        user.passwordHash = ""; // OAuth users don't have password
-        user.userRoles = new HashSet<>(Set.of(UserRoles.ROLE_USER)); // Use mutable HashSet
+        user.userRoles = new HashSet<>(Set.of(UserRoles.ROLE_USER));
         user.bio = "Hi there! I'm new to LokumMeet.";
         user.createdAt = OffsetDateTime.now();
 
-        // Birthdate is not provided by Google OAuth - set default or null
         String birthdate = googleUser.getBirthdate();
         if (birthdate != null) {
             user.birthDate = LocalDate.parse(birthdate);
             user.age = LocalDate.now().getYear() - user.birthDate.getYear();
         } else {
-            user.birthDate = LocalDate.of(2000, 1, 1); // Default value
+            user.birthDate = LocalDate.of(2000, 1, 1);
             user.age = 0;
         }
 

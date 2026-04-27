@@ -9,23 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Slf4j
 @Service
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final ConnectedAccountRepository connectedAccountRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, final ConnectedAccountRepository connectedAccountRepository) {
+    public UserService(UserRepository userRepository, final ConnectedAccountRepository connectedAccountRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
         this.connectedAccountRepository = connectedAccountRepository;
     }
 
@@ -37,13 +32,11 @@ public class UserService implements UserDetailsService {
 
         return org.springframework.security.core.userdetails.User
                 .withUsername(userInfo.getEmail())
-                .password(userInfo.getPasswordHash())
                 .authorities(userInfo.getUserRoles())
                 .build();
     }
 
     public ResponseEntity<Object> addUser(User user) {
-        user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
         userRepository.save(user);
         return ResponseEntity.ok().build();
     }

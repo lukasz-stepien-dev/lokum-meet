@@ -4,22 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fe1a6cf4-c80b-4493-9418-ff2d286ec3ee" name="Changes" comment="Resolve hydration problem">
-      <change afterPath="$PROJECT_DIR$/hooks/useIsEnroll.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/auth/AppAuthenticationToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/auth/AppAuthenticationToken.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/auth/OAuth2LoginSuccessHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/auth/OAuth2LoginSuccessHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/config/ConfigService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/config/ConfigService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/filter/JwtAuthFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/lokummeet/backend/service/JwtService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/resources/application.yml" afterDir="false" />
+    <list default="true" id="fe1a6cf4-c80b-4493-9418-ff2d286ec3ee" name="Changes" comment="Working authentication and authorization">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/fetcher.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/fetcher.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/proxy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/proxy.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data-access-layer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/data-access-layer.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,7 +161,8 @@
       <workItem from="1774601899768" duration="23000" />
       <workItem from="1777040965294" duration="5286000" />
       <workItem from="1777144821748" duration="4000" />
-      <workItem from="1777187793375" duration="5558000" />
+      <workItem from="1777187793375" duration="6293000" />
+      <workItem from="1777284645882" duration="1215000" />
     </task>
     <task id="LOCAL-00001" summary="edit next config">
       <option name="closed" value="true" />
@@ -249,7 +236,15 @@
       <option name="project" value="LOCAL" />
       <updated>1777044641361</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Working authentication and authorization">
+      <option name="closed" value="true" />
+      <created>1777196634681</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1777196634681</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -276,7 +271,8 @@
     <MESSAGE value="#11 Go back and author ui" />
     <MESSAGE value="#11 Display author name and avatar in event page" />
     <MESSAGE value="Resolve hydration problem" />
-    <option name="LAST_COMMIT_MESSAGE" value="Resolve hydration problem" />
+    <MESSAGE value="Working authentication and authorization" />
+    <option name="LAST_COMMIT_MESSAGE" value="Working authentication and authorization" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
