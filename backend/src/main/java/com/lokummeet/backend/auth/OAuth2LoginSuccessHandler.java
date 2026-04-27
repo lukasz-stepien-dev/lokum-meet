@@ -1,6 +1,6 @@
 package com.lokummeet.backend.auth;
 
-import com.lokummeet.backend.config.ConfigService;
+import com.lokummeet.backend.service.ConfigService;
 import com.lokummeet.backend.entity.ConnectedAccount;
 import com.lokummeet.backend.entity.User;
 import com.lokummeet.backend.repository.ConnectedAccountRepository;

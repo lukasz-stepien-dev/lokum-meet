@@ -1,4 +1,4 @@
-package com.lokummeet.backend.config;
+package com.lokummeet.backend.service;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

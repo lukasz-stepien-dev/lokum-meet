@@ -1,10 +1,6 @@
 package com.lokummeet.backend.config;
 
-import io.github.bucket4j.BandwidthBuilder;
 import io.github.bucket4j.Bucket;
-import io.github.bucket4j.Refill;
-import io.github.bucket4j.local.LocalBucketBuilder;
-import io.github.bucket4j.local.SynchronizationStrategy;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletRequest;
