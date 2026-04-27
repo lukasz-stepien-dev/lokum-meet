@@ -41,7 +41,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/logout").permitAll()
                         .requestMatchers("/logout").permitAll()
                         .requestMatchers("/api/auth/me").permitAll()
-                        .requestMatchers("/api/auth/**").hasAuthority("OIDC_USER")
+                        .requestMatchers("/api/auth/**").hasAuthority("ROLE_USER")
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2

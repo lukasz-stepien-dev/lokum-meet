@@ -52,3 +52,9 @@ server:
             cookie:
                 same-site: lax
                 http-only: true
+
+logging:
+    level:
+      org:
+          springframework:
+              security: DEBUG

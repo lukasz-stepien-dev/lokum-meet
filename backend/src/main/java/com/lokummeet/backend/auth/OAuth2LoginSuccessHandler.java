@@ -64,8 +64,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     }
 
     public void authenticate(User user,HttpServletRequest request, HttpServletResponse response) throws IOException {
-        List<GrantedAuthority> authorities = Collections.emptyList();
-        final AppAuthenticationToken token = new AppAuthenticationToken(user, authorities);
+        final AppAuthenticationToken token = new AppAuthenticationToken(user);
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(token);
         SecurityContextHolder.setContext(context);

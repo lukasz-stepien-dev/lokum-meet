@@ -17,18 +17,16 @@ public class AppAuthenticationToken implements Authentication {
 
     private final User user;
     private final boolean authenticated;
-    private final Collection<? extends GrantedAuthority> authorities;
     private WebAuthenticationDetails details;
 
-    public AppAuthenticationToken(User user, Collection<? extends GrantedAuthority> authorities) {
+    public AppAuthenticationToken(User user) {
         this.user = user;
         this.authenticated = true;
-        this.authorities = (authorities != null) ? authorities : Collections.emptyList();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return user.getUserRoles();
     }
 
     public Object getCredentials() {
