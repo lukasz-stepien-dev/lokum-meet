@@ -5,13 +5,13 @@ import { fetcher } from "@/lib/fetcher";
 import { Event } from "@/src/types/Event";
 
 export default function useEventId(id: number) {
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading } = useSWR<Event>(
     `${process.env.NEXT_PUBLIC_API_URL}/api/public/events/${id}`,
     fetcher
   );
 
   return {
-    event: data ? Event.fromJSON(data) : undefined,
+    event: data,
     isLoading,
     isError: error
   }
